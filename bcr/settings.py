@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'employer.apps.employerConfig',
     'applicant.apps.applicantConfig',
     'mainpages.apps.MainpagesConfig',
+    'management.apps.ManagementConfig',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'recruit',
         'USER': 'postgres',
-        'PASSWORD': 'Asdzxpol90',
+        'PASSWORD': 'asdzxpol90',
         'HOST': 'localhost'
     }
 }
