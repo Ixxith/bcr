@@ -1,7 +1,20 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from mainpages.models import Company, JobPosting, Newsletter
+from mainpages.forms import SkillForm, NewsLetterForm, AdministratorForm, EmployerForm, ApplicantForm, ZipForm, AddressForm, CompanyForm, JobPostingForm
+from django.shortcuts import get_object_or_404
+
 #from mainpages.models import Zip, Job, Paint, CompanyContact, Company, Employee
 
+def testPageView(request) :
+
+    form = JobPostingForm()
+    
+    context = {
+      'form' :  form
+    }
+    # Render page with context
+    return render(request, 'applicationpages/test.html', context) 
 
 # Function for the manage page view
 def managePageView(request) :

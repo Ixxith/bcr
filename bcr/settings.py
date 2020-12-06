@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'dal',
+    'dal_select2',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -82,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'recruit',
         'USER': 'postgres',
-        'PASSWORD': 'Asdzxpol90',
+        'PASSWORD': 'asdzxpol90',
         'HOST': 'localhost'
     }
 }
