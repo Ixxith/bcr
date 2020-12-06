@@ -1,5 +1,5 @@
 from django import forms
-from .models import Skill, Newsletter, Administrator, Employer, Applicant, Zip, Address, Company, JobPosting, JobCategory
+from .models import Skill, Newsletter, Administrator, Employer, Applicant, Zip, Address, Company, JobPosting, JobCategory, Application, AutoApply, Resume 
 
 stateChoices = (("Alabama","Alabama"),("Alaska","Alaska"),("Arizona","Arizona"),("Arkansas","Arkansas"),("California","California"),("Colorado","Colorado"),("Connecticut","Connecticut"),("Delaware","Delaware"),("Florida","Florida"),("Georgia","Georgia"),("Hawaii","Hawaii"),("Idaho","Idaho"),("Illinois","Illinois"),("Indiana","Indiana"),("Iowa","Iowa"),("Kansas","Kansas"),("Kentucky","Kentucky"),("Louisiana","Louisiana"),("Maine","Maine"),("Maryland","Maryland"),("Massachusetts","Massachusetts"),("Michigan","Michigan"),("Minnesota","Minnesota"),("Mississippi","Mississippi"),("Missouri","Missouri"),("Montana","Montana"),("Nebraska","Nebraska"),("Nevada","Nevada"),("New Hampshire","New Hampshire"),("New Jersey","New Jersey"),("New Mexico","New Mexico"),("New York","New York"),("North Carolina","North Carolina"),("North Dakota","North Dakota"),("Ohio","Ohio"),("Oklahoma","Oklahoma"),("Oregon","Oregon"),("Pennsylvania","Pennsylvania"),("Rhode Island","Rhode Island"),("South Carolina","South Carolina"),("South Dakota","South Dakota"),("Tennessee","Tennessee"),("Texas","Texas"),("Utah","Utah"),("Vermont","Vermont"),("Virginia","Virginia"),("Washington","Washington"),("West Virginia","West Virginia"),("Wisconsin","Wisconsin"),("Wyoming","Wyoming"))
 
@@ -171,4 +171,37 @@ class JobPostingForm(forms.ModelForm):
                   'requiredskills' : "Skills Required",
                   'category' : "Job Categories",
                   'ispublic' : "Publish Job?"}
+
+class ApplicationForm(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = ['resume']
+        widgets = {
+            'resume' : forms.Select( attrs={'class' : 'form-control'}),
+        }
+        
+class AutoApplyForm(forms.ModelForm):
+    class Meta:
+        model = AutoApply
+        fields = ['wagerequirement', 'needsrelocatassist', 'category']
+        widgets = {
+            'wagerequirement' : forms.NumberInput( attrs={'class' : 'form-control'}), 
+            'relocationassist' : forms.CheckboxInput(attrs={'class' : 'checkbox'}),
+            'category' : forms.SelectMultiple( attrs={'class' : 'form-control'})
+        }
+        labels = {
+            'wagerequirement' : "Wage Requirement",
+            'needsrelocatassist' : "Only apply to jobs with relocation assistance?",
+            'category' : 'Job categories'
+        }
+        
+        
+class ResumeForm(forms.ModelForm):
+    class Meta:
+        model = Resume
+        fields = ['file']
+        widgets = {
+            'file' : forms.TextInput( attrs={'class' : 'form-control'}),
+        }
+        
         
