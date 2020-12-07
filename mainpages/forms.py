@@ -204,4 +204,21 @@ class ResumeForm(forms.ModelForm):
             'file' : forms.TextInput( attrs={'class' : 'form-control'}),
         }
         
+
+usertypes = (("Applicant","Applicant"),("Employer","Employer"))
+
+
+from allauth.socialaccount.forms import SignupForm
+class UserSelectionSignupForm(SignupForm):
+    class Meta:
+        fields = ['username']
+        widgets = {
+            'username' : forms.TextInput( attrs={'class' : 'form-control'}),
+        }
+      
+    
+    typeselection = forms.RadioSelect(attrs={'class' : 'form-control'}, choices=usertypes) 
+
+    def signup(self, request, user):
         
+        user.save()

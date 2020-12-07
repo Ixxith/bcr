@@ -1,4 +1,8 @@
 {% load static %}
+{% load socialaccount %}
+
+
+
    
 <html lang="en">
 
@@ -8,7 +12,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-
+        <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" />
         <title>BCR - Home</title>
 
         <!-- Bootstrap core CSS -->
@@ -24,18 +28,91 @@
 
     </head>
     <body>
-        <nav class="navbar navbar-light bg-light fixed-top">
-            <div class="container">
-                <a class="navbar-brand" href="/">Black Cyber Recruiting</a>
-                <a class="btn btn-primary" href="#">Sign In</a>
-            </div>
+        
+  
+
+  
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+                
+                <a class="ml navbar-brand" href="/">
+                    <img src="{% static 'img/logofull.png'%}" width="172" height="50" alt="">
+                </a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">About</a>
+                    </li>
+                    <li class="nav-item">
+                                <a class="nav-link" href="/jobpostings">Job Postings</a>
+                    </li>
+                    {%for g in  user.groups.all %} 
+                    
+                        {% if g.name == 'employer' %}
+                            <!-- Employer nav -->
+                             <li class="nav-item">
+                                <a class="nav-link" href="/employer/profile">Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/employer/postings">My Job Postings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/employer/applications">View Applications</a>
+                            </li>
+                        {% elif g.name == 'applicant'%}
+                            <!-- Applicant nav -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/applicant/profile">Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/applicant/applications">My Applications</a>
+                            </li>
+                            
+                        {% elif g.name == 'admin'%}
+                            <!-- Admin nav -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/manage/users">Users</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/manage/applications">Applications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/manage/newsletters">Newsletters</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                    <div class="my-2 my-lg-0">
+                        {% if user.is_authenticated %}
+                        
+                        <p  style = 'display: inline;' class="text-center align-middle"> Welcome {{user.username}}  &nbsp;&nbsp;  </p>
+                        <a class="btn btn-primary" style = 'display: inline;' href="/logout">Log Out</a>
+                        {% else %}
+                        <a class="btn btn-primary inline" href="{% provider_login_url 'google' %}">Sign In</a>
+                                    
+                        {% endif %}
+                     </div>
+
+
+
+                </div>
+           
         </nav>
         <br>
         <br>
+        {% if authenticated != False %}
         {% block content %}
         <!-- Inside content-->
         {% endblock %}
-       
+        {% else %}
+        <br><br><br><br>
+        <p class="text-center"> Error: Not authorized for this page. </p>
+        <br><br><br><br>
+        {% endif %}
        
        
          <!-- Footer -->
@@ -86,7 +163,7 @@
         </footer>
 
         <!-- Bootstrap core JavaScript -->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+        <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     </body>
 </html>

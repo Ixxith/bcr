@@ -5,16 +5,25 @@ from mainpages.forms import SkillForm, NewsLetterForm, AdministratorForm, Employ
 from django.shortcuts import get_object_or_404
 
 #from mainpages.models import Zip, Job, Paint, CompanyContact, Company, Employee
+def authUser(request) :
+    user = request.user
+    if user.groups.filter(name='employer').exists():
+        return True
+    else:
+        return False
+
 
 def testPageView(request) :
 
+   
     form = JobPostingForm()
     
     context = {
-      'form' :  form
+      'form' :  form,
+      'authenticated' : authUser(request)
     }
     # Render page with context
-    return render(request, 'applicationpages/test.html', context) 
+    return render(request, 'employerpages/test.html', context) 
 
 # Function for the manage page view
 def managePageView(request) :

@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Zip(models.Model):
@@ -22,7 +22,8 @@ class Person(models.Model):
     lastname = models.CharField(max_length=50, blank=False, null=False)  
     birthdate = models.DateTimeField(blank=False, null=False)  
     username = models.CharField(max_length=50)
-    location = models.ForeignKey(Address, on_delete=models.DO_NOTHING)  
+    location = models.ForeignKey(Address, on_delete=models.DO_NOTHING)
+    user =   models.OneToOneField(User, on_delete=models.DO_NOTHING)
     
     @property
     def full_name(self):

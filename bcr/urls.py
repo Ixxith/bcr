@@ -15,15 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-    
+from django.conf.urls import url
+
+
 urlpatterns = [
     # Admin
+    
     path('admin/', admin.site.urls),
     # Mainpage app
     path('', include('mainpages.urls')),
+    path('/accounts/social/', include('mainpages.urls')),
     # Manage app
-    path('', include('employer.urls')),
+    path('employer/', include('employer.urls')),
     # Hire app
-    path('hire/', include('applicant.urls')),
+    path('applicant/', include('applicant.urls')),
+    path('manage/', include('management.urls')),
+    url(r'^accounts/', include('allauth.urls'))
 ]                  
-            
