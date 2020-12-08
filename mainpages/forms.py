@@ -64,17 +64,19 @@ class AdministratorForm(forms.ModelForm):
         
         
 class EmployerForm(forms.ModelForm):
+    
     class Meta:
         model = Employer
-        fields = ["username","position", "firstname", "lastname", "birthdate", 'location', 'company']
+        fields = ["position", "firstname", "lastname", "birthdate", 'location', 'company', 'supervisor']
         widgets = {
-            'username' : forms.TextInput( attrs={'class' : 'form-control', 'placeholder': 'Input subject'}),
+            
             'position' : forms.TextInput( attrs={'class' : 'form-control', 'placeholder': 'Input role'}),
             'firstname' : forms.TextInput( attrs={'class' : 'form-control', 'placeholder': 'Input first name'}),
             'lastname' : forms.TextInput( attrs={'class' : 'form-control', 'placeholder': 'Input last name'}),
             'birthdate' : forms.DateInput( attrs={'class' : 'form-control', 'placeholder': 'mm/dd/yyyy', 'format' : 'mm/dd/yyyy'}),
             'location' : forms.Select( attrs={'class' : 'form-control'}),
-            'company' : forms.Select( attrs={'class' : 'form-control'})
+            'company' : forms.Select( attrs={'class' : 'form-control'}),
+            'supervisor' : forms.Select( attrs={'class' : 'form-control'})
         }
         
         labels = { 'firstname' : "First Name",
@@ -84,7 +86,7 @@ class EmployerForm(forms.ModelForm):
 class ApplicantForm(forms.ModelForm):
     class Meta:
         model = Applicant
-        fields = ["username", "firstname", "lastname", "birthdate", 'location','recievenewsletter']
+        fields = ["username", "firstname", "lastname", "birthdate", 'location','recievenewsletter', 'skills', 'interests']
         widgets = {
             'username' : forms.TextInput( attrs={'class' : 'form-control', 'placeholder': 'Input subject'}),
             'position' : forms.TextInput( attrs={'class' : 'form-control', 'placeholder': 'Input role'}),
@@ -93,6 +95,8 @@ class ApplicantForm(forms.ModelForm):
             'birthdate' : forms.DateInput( attrs={'class' : 'form-control', 'placeholder': 'mm/dd/yyyy', 'format' : 'mm/dd/yyyy'}),
             'location' : forms.Select( attrs={'class' : 'form-control'}),
             'recievenewsletter' : forms.CheckboxInput(attrs={'class' : 'checkbox'}),
+            'skills' : forms.SelectMultiple(attrs={'class' : 'form-control'}),
+            'interests' : forms.SelectMultiple(attrs={'class' : 'form-control'})
         }
         
         labels = { 'firstname' : "First Name",
@@ -147,7 +151,7 @@ class CompanyForm(forms.ModelForm):
 class JobPostingForm(forms.ModelForm):
     class Meta:
         model = JobPosting
-        fields = ["title", "description", "pay", "wagetype", 'gpareq', 'relocationassist', 'appopendate', 'appclosingdate', 'decisiondate', 'jobstartdate', 'company', 'zipcode', 'requiredskills', 'category','ispublic']
+        fields = ["title", "description", "pay", "wagetype", 'gpareq', 'relocationassist', 'appopendate', 'appclosingdate', 'decisiondate', 'jobstartdate', 'zipcode', 'requiredskills', 'category','ispublic']
         widgets = {
             'title' : forms.TextInput( attrs={'class' : 'form-control'}),
             'description' : forms.TextInput( attrs={'class' : 'form-control'}),
@@ -159,7 +163,7 @@ class JobPostingForm(forms.ModelForm):
             'appclosingdate' : forms.DateInput( attrs={'class' : 'form-control', 'placeholder': 'mm/dd/yyyy', 'format' : 'mm/dd/yyyy'}),
             'decisiondate' : forms.DateInput( attrs={'class' : 'form-control', 'placeholder': 'mm/dd/yyyy', 'format' : 'mm/dd/yyyy'}),
             'jobstartdate' : forms.DateInput( attrs={'class' : 'form-control', 'placeholder': 'mm/dd/yyyy', 'format' : 'mm/dd/yyyy'}),
-            'company' : forms.Select( attrs={'class' : 'form-control'}),
+            #'company' : forms.Select( attrs={'class' : 'form-control'}),
             'zipcode' : forms.Select( attrs={'class' : 'form-control'}),
             'requiredskills' : forms.SelectMultiple( attrs={'class' : 'form-control'}),
             'category' : forms.SelectMultiple( attrs={'class' : 'form-control'}),
@@ -320,10 +324,11 @@ class UserSelectionSignupForm(SignupForm):
                # jcc = JobCategory.objects.get(pk = jc)
               #  if jcc:
                #     newPerson.category.add(jcc)
-            for s in f.get('appskills'):
-                sc = Skill.objects.get(pk = s)
-                if sc:
-                    newPerson.skills.add(sc)
+            if f.get('appskills') != None:
+                for s in f.get('appskills'):
+                    sc = Skill.objects.get(pk = s)
+                    if sc:
+                        newPerson.skills.add(sc)
 
         user = super(UserSelectionSignupForm, self).save(request)
         # Add your own processing here.

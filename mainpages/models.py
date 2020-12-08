@@ -6,16 +6,29 @@ class Zip(models.Model):
     code = models.IntegerField(blank=False, null=False)
     city = models.CharField(max_length=50, blank=False, null=False)
     state = models.CharField(max_length=2, blank=False, null=False)
+    def __str__(self):
+        return '%s' % (self.code)
 
 class Address(models.Model):
     addressline1 = models.CharField(max_length=50, blank=False, null=False)  
     addressline2 = models.CharField(max_length=50, blank=False, null=False) 
     zipcode = models.ForeignKey(Zip, on_delete=models.DO_NOTHING)
+    
+    def __str__(self):
+        return '%s, %s, %s' % (self.addressline1, self.addressline2, self.zipcode.code)
  
 
 class Skill(models.Model):
     name = models.CharField(max_length=100, blank=False, null=False)
+    def __str__(self):
+        return '%s' % (self.name)
 
+class JobCategory(models.Model):
+    name = models.CharField(max_length=50, blank=False, null=False)
+    gpaceiling = models.DecimalField(max_digits=3, decimal_places=2, blank=False, null=False) 
+    
+    def __str__(self):
+        return '%s' % (self.name)
 
 class Person(models.Model):
     firstname = models.CharField(max_length=50, blank=False, null=False)  
@@ -24,6 +37,7 @@ class Person(models.Model):
     username = models.CharField(max_length=50)
     location = models.ForeignKey(Address, on_delete=models.DO_NOTHING)
     user =   models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    interests = models.ManyToManyField(JobCategory, null=True)
     
     def full_name(self):
         return '%s %s' % (self.firstname, self.lastname)
@@ -40,13 +54,14 @@ class Applicant(Person):
     mentor = models.ForeignKey('self', on_delete=models.DO_NOTHING) 
     skills = models.ManyToManyField(Skill) 
 
-class JobCategory(models.Model):
-    name = models.CharField(max_length=50, blank=False, null=False)
-    gpaceiling = models.DecimalField(max_digits=3, decimal_places=2, blank=False, null=False) 
 
 class Resume(models.Model):
+    name = models.CharField(max_length=100, blank=False, null=False)
     file = models.CharField(max_length=200, blank=False, null=False)
-    applicant = models.ForeignKey(Applicant,  on_delete=models.DO_NOTHING) 
+    applicant = models.ForeignKey(Applicant,  on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return '%s' % (self.name)
     
 class AutoApply(models.Model):
     applicant = models.ForeignKey(Applicant, on_delete=models.DO_NOTHING)
@@ -59,6 +74,8 @@ class AutoApply(models.Model):
 class Company(models.Model):
     companyname = models.CharField(max_length=50, blank=False, null=False) 
     location = models.ForeignKey(Address,  on_delete=models.DO_NOTHING) 
+    def __str__(self):
+        return '%s' % (self.companyname)
 
 class Employer(Person):
     position = models.CharField(max_length=50, blank=False, null=False)
@@ -86,7 +103,7 @@ class Application(models.Model):
     jobposting = models.ForeignKey(JobPosting, on_delete=models.CASCADE)
     submitdate = models.DateTimeField(blank=False, null=False)  
     status = models.CharField(max_length=50, blank=False, null=False)
-    autoapply = models.ForeignKey(AutoApply, on_delete=models.DO_NOTHING)
+    autoapply = models.ForeignKey(AutoApply, on_delete=models.DO_NOTHING, null=True)
     resume = models.ForeignKey(Resume, on_delete=models.DO_NOTHING)
     applicant = models.ForeignKey(Applicant, on_delete=models.DO_NOTHING)
 
@@ -103,10 +120,6 @@ class Newsletter(models.Model):
     sentto = models.ManyToManyField(Person, related_name='sentto')
     sentby = models.ForeignKey(Administrator,  on_delete=models.DO_NOTHING,related_name='sentby') 
     
-class UserProfile(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE)
-  picture = models.TextField(null=True, blank=True)
-
 
 def updateObjectFromForm(Object, form):
     allfieldsFilled = True

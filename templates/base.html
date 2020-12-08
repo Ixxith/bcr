@@ -13,7 +13,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" />
-        <title>BCR - Home</title>
+        <title>BCR</title>
 
         <!-- Bootstrap core CSS -->
         <link href= "{% static 'vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet ">
@@ -88,8 +88,8 @@
                 </ul>
                     <div class="my-2 my-lg-0">
                         {% if user.is_authenticated %}
-                        
-                        <p  style = 'display: inline;' class="text-center align-middle"> Welcome {{user.username}}  &nbsp;&nbsp;  </p>
+                        <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" height = 40 width = 40 class="rounded-circle">
+                        <p  style = 'display: inline;' class="text-center align-middle">  &nbsp; Welcome {{user.username}}  &nbsp;&nbsp;  </p>
                         <a class="btn btn-primary" style = 'display: inline;' href="/logout">Log Out</a>
                         {% else %}
                         <a class="btn btn-primary inline" href="{% provider_login_url 'google' %}">Sign In</a>
