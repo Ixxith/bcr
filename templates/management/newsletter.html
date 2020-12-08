@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<head>
+<p>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -43,7 +43,44 @@
     <script>
         window.GD = window.GD || {};
     </script>
-</head>     
+    <script>
+        function processForm() {
+            var x = document.getElementById("dropdown");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } 
+            else {
+                x.style.display = "none";
+            }
+            document.getElementById("dropdown").style.visibility = "visible";
+        }
+    </script>
+    <style>
+        .button {
+            background-color: #008CBA;
+            padding: 8px;
+        }
+
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 20%;
+          height: 20%;
+          padding-left: 100px;
+        }
+        
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+
+    </style>
+</p>     
 <div>
 <br>       
 <br>    
@@ -64,12 +101,71 @@
         <br>
         <textarea id = "myTextArea" rows = "10" cols = "80"></textarea>
         <br><br>
-        <input type="button" value="submit Newsletter" id="btnsubmit" onclick="processForm()" style="max-width: 200px;">
+        <input type="button" value="Add Recipients" id="btnsubmit" onclick="processForm()" style="max-width: 200px;">
     </form>
     <br>
+    
+<div id = "dropdown" style="display: none;">
+    <br><br>
+    <table id="table" style="padding-left: 10%;" >
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Send</th>
+    </tr>
+    <tr>
+        <td>Diana Warner</td>
+        <td>alicia.r.coffey@trashymail.com</td>
+        <td><input type="checkbox" id="person1" name="person1" value="person1"></td>
+    </tr>
+    <tr>
+        <td>Tracy Wyman</td>
+        <td>karine.f.bello@mailinator.com</td>
+        <td><input type="checkbox" id="person2" name="person2" value="person2"></td>
+    </tr>
+    <tr>
+        <td>Timmy Schmidt</td>
+        <td>bradley.g.chase@dodgit.com</td>
+        <td><input type="checkbox" id="person3" name="person3" value="person3"></td>
+    </tr>
+    <tr>
+        <td>Steve Lewis</td>
+        <td>dana.b.narcisse@trashymail.com</td>
+        <td><input type="checkbox" id="person4" name="person4" value="person4"></td>
+    </tr>
+    <tr>
+        <td>Richard Clark</td>
+        <td>joanne.m.norton@mailinator.com</td>
+        <td><input type="checkbox" id="person5" name="person5" value="person5"></td>
+    </tr>
+    <tr>
+        <td>Warren Cromar</td>
+        <td>bernice.c.knott@pookmail.com</td>
+        <td><input type="checkbox" id="person6" name="person6" value="person6"></td>
+    </tr>
+        <tr>
+        <td>Patricia Bell</td>
+        <td>gregory.d.chapman@trashymail.com</td>
+        <td><input type="checkbox" id="person7" name="person7" value="person7"></td>
+    </tr>
+        <tr>
+        <td>Larry Deskins</td>
+        <td>robert.b.wright@pookmail.com</td>
+        <td><input type="checkbox" id="person8" name="person8" value="person8"></td>
+    </tr>
+        <tr>
+        <td>Marsha Archer</td>
+        <td>stephen.o.sweet@trashymail.com</td>
+        <td><input type="checkbox" id="person9" name="person9" value="person9"></td>
+    </tr>
+    </table>
+    <br>
+    <a href="{% url 'send' %}">
+    <input type="button" value="Send" id="btnsend" style="max-width: 115px; background-color: blue; color: white">
+    </a>
+    <br>
+    <table id="table" style="padding-left: 10%;" >
 </div>
-<div id = "dropdown">
-
 </div>
 </div>
 
