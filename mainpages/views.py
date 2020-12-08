@@ -4,6 +4,7 @@ from mainpages.models import Employer, Applicant
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from allauth.socialaccount.forms import SignupForm
+import datetime
 
 
 # Create your views here.

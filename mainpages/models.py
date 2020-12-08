@@ -23,14 +23,13 @@ class Person(models.Model):
     birthdate = models.DateTimeField(blank=False, null=False)  
     username = models.CharField(max_length=50)
     location = models.ForeignKey(Address, on_delete=models.DO_NOTHING)
-    user =   models.OneToOneField(User, on_delete=models.DO_NOTHING)
+    user =   models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     
-    @property
     def full_name(self):
         return '%s %s' % (self.firstname, self.lastname)
     
     def __str__(self):
-                return (self.full_name)  
+        return '%s %s' % (self.firstname, self.lastname)
 
 
 class Administrator(Person):
@@ -67,7 +66,7 @@ class Employer(Person):
     company = models.ForeignKey(Company,  on_delete=models.DO_NOTHING) 
 
 class JobPosting(models.Model):
-    company = models.ForeignKey(Company,  on_delete=models.DO_NOTHING) 
+    company = models.ForeignKey(Company,  on_delete=models.CASCADE) 
     category = models.ManyToManyField(JobCategory) 
     requiredskills = models.ManyToManyField(Skill) 
     title = models.CharField(max_length=50, blank=False, null=False)
@@ -84,7 +83,7 @@ class JobPosting(models.Model):
     jobstartdate = models.DateTimeField(blank=False, null=False)  
 
 class Application(models.Model):
-    jobposting = models.ForeignKey(JobPosting, on_delete=models.DO_NOTHING)
+    jobposting = models.ForeignKey(JobPosting, on_delete=models.CASCADE)
     submitdate = models.DateTimeField(blank=False, null=False)  
     status = models.CharField(max_length=50, blank=False, null=False)
     autoapply = models.ForeignKey(AutoApply, on_delete=models.DO_NOTHING)
