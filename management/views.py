@@ -1,8 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
-
-from .forms import NewsLetterForm
-
+from mainpages.models import Newsletter
+from mainpages.forms import NewsLetterForm
 # Create your views here.
+<<<<<<< HEAD
 def newsletterPageView(request) :
+
     return render(request, 'management/newsletter.html')
+=======
+
+>>>>>>> master
