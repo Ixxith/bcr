@@ -275,10 +275,11 @@ class UserSelectionSignupForm(SignupForm):
         newPerson.location = pnewAddress
         
         if f.get('persontype') == "employer":
-            newPerson = Employer()
+            
             newPerson.position = f.get('employerrole')
-            company = Company.objects.get(pk = f.get('employerselect'))
-            if company == None:
+            companyquery = Company.objects.filter(pk = f.get('employerselect'))
+            company = None
+            if companyquery.count() == 0:
                 company = Company()
                 company.companyname = f.get('employer')
                 newAddress = Address()
@@ -297,10 +298,13 @@ class UserSelectionSignupForm(SignupForm):
                 newAddress.save()
                 company.location = newAddress
                 company.save()
+            else:
+                company = companyquery.first()
             newPerson.company = company
             newPerson.save()
+            
         else:
-            breakpoint()
+           
             if  f.get('apprecievenewsletter') == 'on':
                 newPerson.recievenewsletter = True
             else:
