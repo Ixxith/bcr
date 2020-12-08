@@ -34,7 +34,7 @@ class NewsLetterForm(forms.ModelForm):
             'subject' : forms.TextInput( attrs={'class' : 'form-control', 'placeholder': 'Input newsletter subject'}),
             'body' : forms.Textarea( attrs={'class' : 'form-control', 'placeholder': 'Input newsletter body here'}),
             'sentto' : forms.SelectMultiple( attrs={'class' : 'form-control'})
-        }
+        } 
         
         labels = { 'sentto' : "Choose senders"}
         
