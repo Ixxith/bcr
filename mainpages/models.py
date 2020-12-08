@@ -37,7 +37,7 @@ class Person(models.Model):
     username = models.CharField(max_length=50)
     location = models.ForeignKey(Address, on_delete=models.DO_NOTHING)
     user =   models.OneToOneField(User, on_delete=models.CASCADE, null=True)
-    interests = models.ManyToManyField(JobCategory, null=True)
+    interests = models.ManyToManyField(JobCategory)
     
     def full_name(self):
         return '%s %s' % (self.firstname, self.lastname)

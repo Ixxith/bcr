@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from mainpages.models import Company, JobPosting, Newsletter, Person
+from mainpages.models import Company, JobPosting, Newsletter, Person, Application
 from mainpages.forms import SkillForm, NewsLetterForm, AdministratorForm, EmployerForm, ApplicantForm, ZipForm, AddressForm, CompanyForm, JobPostingForm
 from django.shortcuts import get_object_or_404
 from django.core import serializers
@@ -86,17 +86,28 @@ def editprofilePageView(request) :
     return render(request, 'employerpages/editprofile.html', context) 
 
 def myapplicationsPageView(request) :
+    if request.POST:
+        
+        jp = Application.objects.get(pk=request.POST.get('appid'))
+        if jp.jobposting.company == request.user.person.employer.company:
+            jp.status = request.POST.get("app")
+            jp.save()
+     
+    appqueryset = Application.objects.none()
+    
+    jpList = JobPosting.objects.filter(company = request.user.person.employer.company)
+    for jp in jpList:
+        appqs = Application.objects.filter(jobposting = jp)
+        appqueryset = appqueryset.union(appqs)
 
-    
-    
-    
+      
     context = {
-      'authenticated' : authUser(request),
-      'postings' : JobPosting.objects.filter(company=request.user.person.employer.company)
+    'authenticated' : authUser(request),
+    'applications' : appqueryset
     }
-    
+
     # Render page with context
-    return render(request, 'employerpages/myapplications.html', context) 
+    return render(request, 'employerpages/applications.html', context) 
 
 def mypostingsPageView(request) :
 

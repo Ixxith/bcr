@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<br><br><br>
+<div class = "container">
+    <div class = "row">
+        <div class="col-sm-8">
+        <h1> Job Applications </h1>
+        </div>
+         <div class="col-sm-4">
+        
+        </div>
+     </div>
+ </div>
+{% if applications.count != 0 %}
+{% for app in applications %}
+<div class="card m-3">
+    
+    
+    <h5 class="card-header">Application - {{app.jobposting.title}} - {{app.status}}</h5>
+    <div class="card-body">
+        <h5 class="card-title">Status: {{app.status}} </h5>
+        <p class="card-text"><b> Description: </b> {{app.jobposting.description}}</p>
+        <p class="card-text"><b> GPA Requirement: </b> {{app.jobposting.gpareq}}</p>
+        <p class="card-text"><b> Application Opening Date: </b> {{app.jobposting.appopendate.date  }}</p>
+        <p class="card-text"><b> Application Closing Date: </b> {{app.jobposting.appclosingdate.date   }}</p>
+        <p class="card-text"><b> Application Decision Date: </b> {{app.jobposting.decisiondate.date  }}</p>
+        <p class="card-text"><b> Job Start Date: </b> {{app.jobposting.jobstartdate.date   }}</p>
+        <br>
+        <p class="card-text"><b> Resume: </b> {{app.resume.name}}</p>
+    
+
+        <form action="/employer/applications/"  style = "display:inline;" method="post">
+            {% csrf_token %}
+            <input type="hidden" id="appid" name="appid" value="{{app.pk}}">
+            <input type="hidden" id="app" name="app" value="Accepted">
+            <button type="submit"  class="btn btn-success" > Mark Accepted </button>
+        </form>
+
+        <form action="/employer/applications/"  style = "display:inline;" method="post">
+            {% csrf_token %}
+            <input type="hidden" id="appid" name="appid" value="{{app.pk}}">
+            <input type="hidden" id="app" name="app" value="Pending">
+            <button type="submit"  class="btn btn-primary" > Mark Pending </button>
+        </form>
+
+        <form action="/employer/applications/"  style = "display:inline;" method="post">
+            {% csrf_token %}
+            <input type="hidden" id="appid" name="appid" value="{{app.pk}}">
+            <input type="hidden" id="app" name="app" value="In Review">
+            <button type="submit"  class="btn btn-primary"> Mark In Review </button>
+        </form>
+
+        <form action="/employer/applications/"  style = "display:inline;" method="post">
+            {% csrf_token %}
+            <input type="hidden" id="appid" name="appid" value="{{app.pk}}">
+            <input type="hidden" id="app" name="app" value="Denied">
+            <button type="submit"  class="btn btn-danger"> Deny Application </button>
+        </form>
+    </div>
+</div>    
+    {%endfor%}
+    
+
+{% else %}
+<br><br><br>
+<h2 class='text-center text-secondary'>  No applications to display  </h2>
+<br><br><br>
+
+
+{% endif %}
+
+
+{% endblock %}  
+     
