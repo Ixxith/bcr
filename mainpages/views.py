@@ -42,6 +42,3 @@ def indexPageView(request) :
    
     return render(request, 'homepage/index.html') 
 
-
-
-

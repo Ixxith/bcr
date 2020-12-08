@@ -14,7 +14,7 @@ class MySignupView(SignupView):
 
 urlpatterns = [
     path("", indexPageView, name="index"),
-    path("about", aboutPageView, name="about"), 
+    path("about/", aboutPageView, name="about"), 
     url(r'^accounts/social/signup', MySignupView.as_view(), name='socialaccount_signup'),
     
     url(r'^logout/$', LogoutView.as_view(), {'next_page': ''}, name='logout'),

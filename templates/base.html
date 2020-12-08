@@ -45,7 +45,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/">About</a>
+                        <a class="nav-link" href="{% url 'about'%}">About</a>
                     </li>
                     <li class="nav-item">
                                 <a class="nav-link" href="/jobpostings">Job Postings</a>
@@ -111,7 +111,7 @@
         {% else %}
         <br><br><br><br>
         <p class="text-center"> Error: Not authorized for this page. </p>
-        <br><br><br><br>
+        <br><br><br><br><br>
         {% endif %}
        
        
@@ -122,7 +122,7 @@
                 <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
                 <ul class="list-inline mb-2">
                     <li class="list-inline-item">
-                    <a href="#">About</a>
+                    <a href="{% url 'about'%}">About</a>
                     </li>
                     <li class="list-inline-item">&sdot;</li>
                     <li class="list-inline-item">
