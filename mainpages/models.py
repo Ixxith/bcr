@@ -23,13 +23,14 @@ class Person(models.Model):
     birthdate = models.DateTimeField(blank=False, null=False)  
     username = models.CharField(max_length=50)
     location = models.ForeignKey(Address, on_delete=models.DO_NOTHING)
-    user =   models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    user =   models.OneToOneField(User, on_delete=models.DO_NOTHING)
     
+    @property
     def full_name(self):
         return '%s %s' % (self.firstname, self.lastname)
     
     def __str__(self):
-        return '%s %s' % (self.firstname, self.lastname)
+                return (self.full_name)  
 
 
 class Administrator(Person):
@@ -66,7 +67,7 @@ class Employer(Person):
     company = models.ForeignKey(Company,  on_delete=models.DO_NOTHING) 
 
 class JobPosting(models.Model):
-    company = models.ForeignKey(Company,  on_delete=models.CASCADE) 
+    company = models.ForeignKey(Company,  on_delete=models.DO_NOTHING) 
     category = models.ManyToManyField(JobCategory) 
     requiredskills = models.ManyToManyField(Skill) 
     title = models.CharField(max_length=50, blank=False, null=False)
@@ -83,7 +84,7 @@ class JobPosting(models.Model):
     jobstartdate = models.DateTimeField(blank=False, null=False)  
 
 class Application(models.Model):
-    jobposting = models.ForeignKey(JobPosting, on_delete=models.CASCADE)
+    jobposting = models.ForeignKey(JobPosting, on_delete=models.DO_NOTHING)
     submitdate = models.DateTimeField(blank=False, null=False)  
     status = models.CharField(max_length=50, blank=False, null=False)
     autoapply = models.ForeignKey(AutoApply, on_delete=models.DO_NOTHING)
@@ -102,10 +103,6 @@ class Newsletter(models.Model):
     sentdate = models.DateTimeField(blank=False, null=False)  
     sentto = models.ManyToManyField(Person, related_name='sentto')
     sentby = models.ForeignKey(Administrator,  on_delete=models.DO_NOTHING,related_name='sentby') 
-    
-class UserProfile(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE)
-  picture = models.TextField(null=True, blank=True)
 
 
 def updateObjectFromForm(Object, form):

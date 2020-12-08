@@ -1,53 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<br><br>
- 
-  <form class = 'm-3' method="post">
-   <h2>Sign up</h2>
+  <h2>Sign up</h2>
+  <form method="post">
     {% csrf_token %}
-    {{form}}
-    <br>
-    <button class = 'btn btn-primary' type="submit">Sign up</button>
+    {{ form }}
+    <button type="submit">Sign up</button>
   </form>
-  <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>
-
-<script> 
-    $( "label[for^='id_emp']" ).attr('hidden','true').removeAttr("required");
-    $( "input[name^='emp']" ).attr('hidden','true').removeAttr("required");
-    $( "select[name^='emp']" ).attr('hidden','true').removeAttr("required");
-
-    $( "label[for^='id_app']" ).attr('hidden','true').removeAttr("required");
-    $( "input[name^='app']" ).attr('hidden','true').removeAttr("required");
-    $( "select[name^='app']" ).attr('hidden','true').removeAttr("required");
-
-    $( "input:not([type|='radio'])" ).addClass("form-control");
-    $( "select:not([type|='radio'])" ).addClass("form-control");
-
-    
-
-    $("#id_persontype_0").change(function(){
-      
-      $( "label[for^='id_emp']" ).attr('hidden','true').removeAttr("required");
-      $( "input[name^='emp']" ).attr('hidden','true').removeAttr("required");
-      $( "select[name^='emp']" ).attr('hidden','true').removeAttr("required");
-
-      $( "label[for^='id_app']" ).attr ("hidden", false);
-      $( "input[name^='app']" ).attr ("hidden", false);
-      $( "select[name^='app']" ).attr ("hidden", false);
-    });
-
-    $("#id_persontype_1").change(function(){
-     
-      $( "label[for^='id_app']" ).attr('hidden','true').removeAttr("required");
-      $( "input[name^='app']" ).attr('hidden','true').removeAttr("required");
-      $( "select[name^='app']" ).attr('hidden','true').removeAttr("required");
-
-      $( "label[for^='id_emp']" ).attr ("hidden", false);
-      $( "input[name^='emp']" ).attr ("hidden", false);
-      $( "select[name^='emp']" ).attr ("hidden", false);
-    });
-          
-</script>
-
 {% endblock %}

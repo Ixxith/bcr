@@ -6,11 +6,10 @@ from django.conf import settings
 from django.contrib.auth.views import LogoutView
 from allauth.socialaccount.views import SignupView
 from mainpages.forms import UserSelectionSignupForm
-import datetime
 class MySignupView(SignupView):
     form = UserSelectionSignupForm
     template_name = 'signup.html'
-    
+
 # Urls for the main page and the about page
 
 urlpatterns = [
