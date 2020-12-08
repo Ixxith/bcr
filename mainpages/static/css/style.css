@@ -1,0 +1,55 @@
+.split {
+    height: 50%;
+    width: 50%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+    padding-bottom: 30px;
+  }
+  
+  /* Control the left side */
+  .left {
+    left: 25;
+    
+  }
+  
+  /* Control the right side */
+  .right {
+    right: 100;
+    
+  }
+  
+  /* If you want the content centered horizontally and vertically */
+  .centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+  /* Style the image inside the centered container, if needed */
+  .centered img {
+    width: 400px;
+    height: 200px;
+    border-radius: 10%;
+  }
+
+  .all {
+    padding-top: 50%;
+    padding-bottom:10%
+  }
+
+  .masthead margBotXl {
+    padding-top: 50%;
+  }
+
+  .header {
+    padding: 60px;
+    text-align: center;
+    background: #1abc9c;
+    color: white;
+    font-size: 30px;
+  }
