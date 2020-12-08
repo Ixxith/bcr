@@ -155,6 +155,8 @@ SOCIALACCOUNT_FORMS = {
     'signup': 'mainpages.forms.UserSelectionSignupForm'
 }
 
+SOCIAL_AUTH_PIPELINE = ('maingpages.views.update_user_social_data')
+
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [

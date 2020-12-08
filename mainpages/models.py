@@ -102,6 +102,10 @@ class Newsletter(models.Model):
     sentdate = models.DateTimeField(blank=False, null=False)  
     sentto = models.ManyToManyField(Person, related_name='sentto')
     sentby = models.ForeignKey(Administrator,  on_delete=models.DO_NOTHING,related_name='sentby') 
+    
+class UserProfile(models.Model):
+  user = models.OneToOneField(User, on_delete=models.CASCADE)
+  picture = models.TextField(null=True, blank=True)
 
 
 def updateObjectFromForm(Object, form):

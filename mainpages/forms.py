@@ -1,5 +1,6 @@
 from django import forms
 from .models import Skill, Newsletter, Administrator, Employer, Applicant, Zip, Address, Company, JobPosting, JobCategory, Application, AutoApply, Resume 
+from django.contrib.auth.models import Group
 
 stateChoices = (("AL","Alabama"),	("AK","Alaska"),	("AZ","Arizona"),	("AR","Arkansas"),	("CA","California"),	("CO","Colorado"),	("CT","Connecticut"),	("DE","Delaware"),	("FL","Florida"),	("GA","Georgia"),	("HI","Hawaii"),	("ID","Idaho"),	("IL","Illinois"),	("IN","Indiana"),	("IA","Iowa"),	("KS","Kansas"),	("KY","Kentucky"),	("LA","Louisiana"),	("ME","Maine"),	("MD","Maryland"),	("MA","Massachusetts"),	("MI","Michigan"),	("MN","Minnesota"),	("MS","Mississippi"),	("MO","Missouri"),	("MT","Montana"),	("NE","Nebraska"),	("NV","Nevada"),	("NH","New Hampshire"),	("NJ","New Jersey"),	("NM","New Mexico"),	("NY","New York"),	("NC","North Carolina"),	("ND","North Dakota"),	("OH","Ohio"),	("OK","Oklahoma"),	("OR","Oregon"),	("PA","Pennsylvania"),	("RI","Rhode Island"),	("SC","South Carolina"),	("SD","South Dakota"),	("TN","Tennessee"),	("TX","Texas"),	("UT","Utah"),	("VT","Vermont"),	("VA","Virginia"),	("WA","Washington"),	("WV","West Virginia"),	("WI","Wisconsin"),	("WY","Wyoming"))
 
@@ -26,17 +27,22 @@ class JobCategoryForm(forms.ModelForm):
         "name": "Job Category Name"
     }
         
+
+newsletterchoices = (("emp","Employers"),("app","Applicants"))
+
 class NewsLetterForm(forms.ModelForm):
+    typetosendto = forms.MultipleChoiceField(widget=forms.SelectMultiple(), choices = newsletterchoices, label="Select the recievers of this message")
     class Meta:
         model = Newsletter
-        fields = ["subject", "body", "sentto"]
+        fields = ["subject", "body", #"sentto"
+                  ]
         widgets = {
             'subject' : forms.TextInput( attrs={'class' : 'form-control', 'placeholder': 'Input newsletter subject'}),
             'body' : forms.Textarea( attrs={'class' : 'form-control', 'placeholder': 'Input newsletter body here'}),
-            'sentto' : forms.SelectMultiple( attrs={'class' : 'form-control'})
+            #'sentto' : forms.SelectMultiple( attrs={'class' : 'form-control'})
         }
         
-        labels = { 'sentto' : "Choose senders"}
+      #  labels = { 'sentto' : "Choose senders"}
         
 class AdministratorForm(forms.ModelForm):
     class Meta:
@@ -322,6 +328,14 @@ class UserSelectionSignupForm(SignupForm):
         user = super(UserSelectionSignupForm, self).save(request)
         # Add your own processing here.
         
+        if f.get('persontype') == "employer":
+            g = Group.objects.get(name='employer') 
+            user.groups.add(g)
+        else:
+            g = Group.objects.get(name='applicant') 
+            user.groups.add(g)
+            
+        user.save()
         newPerson.user = user
         newPerson.save()
         # You must return the original result.

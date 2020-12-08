@@ -1,6 +1,6 @@
 from django.contrib.auth import login, authenticate
 from mainpages.forms import UserSelectionSignupForm
-from mainpages.models import Employer, Applicant
+from mainpages.models import Employer, Applicant, UserProfile
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from allauth.socialaccount.forms import SignupForm
@@ -13,7 +13,18 @@ import datetime
 
 # View for about page template
 
+def update_user_social_data(strategy, *args, **kwargs):
+  response = kwargs['response']
+  backend = kwargs['backend']
+  user = kwargs['user']
 
+  if response['picture']:
+    url = response['picture']
+    userProfile_obj = UserProfile()
+    userProfile_obj.user = user
+    userProfile_obj.picture = url
+    userProfile_obj.save()
+    
 
 
 def signupPageView(request):
