@@ -1,7 +1,8 @@
 from django import forms
 from .models import Skill, Newsletter, Administrator, Employer, Applicant, Zip, Address, Company, JobPosting, JobCategory, Application, AutoApply, Resume 
+from django.contrib.auth.models import Group
 
-stateChoices = (("Alabama","Alabama"),("Alaska","Alaska"),("Arizona","Arizona"),("Arkansas","Arkansas"),("California","California"),("Colorado","Colorado"),("Connecticut","Connecticut"),("Delaware","Delaware"),("Florida","Florida"),("Georgia","Georgia"),("Hawaii","Hawaii"),("Idaho","Idaho"),("Illinois","Illinois"),("Indiana","Indiana"),("Iowa","Iowa"),("Kansas","Kansas"),("Kentucky","Kentucky"),("Louisiana","Louisiana"),("Maine","Maine"),("Maryland","Maryland"),("Massachusetts","Massachusetts"),("Michigan","Michigan"),("Minnesota","Minnesota"),("Mississippi","Mississippi"),("Missouri","Missouri"),("Montana","Montana"),("Nebraska","Nebraska"),("Nevada","Nevada"),("New Hampshire","New Hampshire"),("New Jersey","New Jersey"),("New Mexico","New Mexico"),("New York","New York"),("North Carolina","North Carolina"),("North Dakota","North Dakota"),("Ohio","Ohio"),("Oklahoma","Oklahoma"),("Oregon","Oregon"),("Pennsylvania","Pennsylvania"),("Rhode Island","Rhode Island"),("South Carolina","South Carolina"),("South Dakota","South Dakota"),("Tennessee","Tennessee"),("Texas","Texas"),("Utah","Utah"),("Vermont","Vermont"),("Virginia","Virginia"),("Washington","Washington"),("West Virginia","West Virginia"),("Wisconsin","Wisconsin"),("Wyoming","Wyoming"))
+stateChoices = (("AL","Alabama"),	("AK","Alaska"),	("AZ","Arizona"),	("AR","Arkansas"),	("CA","California"),	("CO","Colorado"),	("CT","Connecticut"),	("DE","Delaware"),	("FL","Florida"),	("GA","Georgia"),	("HI","Hawaii"),	("ID","Idaho"),	("IL","Illinois"),	("IN","Indiana"),	("IA","Iowa"),	("KS","Kansas"),	("KY","Kentucky"),	("LA","Louisiana"),	("ME","Maine"),	("MD","Maryland"),	("MA","Massachusetts"),	("MI","Michigan"),	("MN","Minnesota"),	("MS","Mississippi"),	("MO","Missouri"),	("MT","Montana"),	("NE","Nebraska"),	("NV","Nevada"),	("NH","New Hampshire"),	("NJ","New Jersey"),	("NM","New Mexico"),	("NY","New York"),	("NC","North Carolina"),	("ND","North Dakota"),	("OH","Ohio"),	("OK","Oklahoma"),	("OR","Oregon"),	("PA","Pennsylvania"),	("RI","Rhode Island"),	("SC","South Carolina"),	("SD","South Dakota"),	("TN","Tennessee"),	("TX","Texas"),	("UT","Utah"),	("VT","Vermont"),	("VA","Virginia"),	("WA","Washington"),	("WV","West Virginia"),	("WI","Wisconsin"),	("WY","Wyoming"))
 
 
 class SkillForm(forms.ModelForm):
@@ -26,17 +27,22 @@ class JobCategoryForm(forms.ModelForm):
         "name": "Job Category Name"
     }
         
+
+newsletterchoices = (("emp","Employers"),("app","Applicants"))
+
 class NewsLetterForm(forms.ModelForm):
+    typetosendto = forms.MultipleChoiceField(widget=forms.SelectMultiple(), choices = newsletterchoices, label="Select the recievers of this message")
     class Meta:
         model = Newsletter
-        fields = ["subject", "body", "sentto"]
+        fields = ["subject", "body", #"sentto"
+                  ]
         widgets = {
             'subject' : forms.TextInput( attrs={'class' : 'form-control', 'placeholder': 'Input newsletter subject'}),
             'body' : forms.Textarea( attrs={'class' : 'form-control', 'placeholder': 'Input newsletter body here'}),
-            'sentto' : forms.SelectMultiple( attrs={'class' : 'form-control'})
-        } 
+            #'sentto' : forms.SelectMultiple( attrs={'class' : 'form-control'})
+        }
         
-        labels = { 'sentto' : "Choose senders"}
+      #  labels = { 'sentto' : "Choose senders"}
         
 class AdministratorForm(forms.ModelForm):
     class Meta:
@@ -58,17 +64,19 @@ class AdministratorForm(forms.ModelForm):
         
         
 class EmployerForm(forms.ModelForm):
+    
     class Meta:
         model = Employer
-        fields = ["username","position", "firstname", "lastname", "birthdate", 'location', 'company']
+        fields = ["position", "firstname", "lastname", "birthdate", 'location', 'company', 'supervisor']
         widgets = {
-            'username' : forms.TextInput( attrs={'class' : 'form-control', 'placeholder': 'Input subject'}),
+            
             'position' : forms.TextInput( attrs={'class' : 'form-control', 'placeholder': 'Input role'}),
             'firstname' : forms.TextInput( attrs={'class' : 'form-control', 'placeholder': 'Input first name'}),
             'lastname' : forms.TextInput( attrs={'class' : 'form-control', 'placeholder': 'Input last name'}),
             'birthdate' : forms.DateInput( attrs={'class' : 'form-control', 'placeholder': 'mm/dd/yyyy', 'format' : 'mm/dd/yyyy'}),
             'location' : forms.Select( attrs={'class' : 'form-control'}),
-            'company' : forms.Select( attrs={'class' : 'form-control'})
+            'company' : forms.Select( attrs={'class' : 'form-control'}),
+            'supervisor' : forms.Select( attrs={'class' : 'form-control'})
         }
         
         labels = { 'firstname' : "First Name",
@@ -78,7 +86,7 @@ class EmployerForm(forms.ModelForm):
 class ApplicantForm(forms.ModelForm):
     class Meta:
         model = Applicant
-        fields = ["username", "firstname", "lastname", "birthdate", 'location','recievenewsletter']
+        fields = ["username", "firstname", "lastname", "birthdate", 'location','recievenewsletter', 'skills', 'interests']
         widgets = {
             'username' : forms.TextInput( attrs={'class' : 'form-control', 'placeholder': 'Input subject'}),
             'position' : forms.TextInput( attrs={'class' : 'form-control', 'placeholder': 'Input role'}),
@@ -87,6 +95,8 @@ class ApplicantForm(forms.ModelForm):
             'birthdate' : forms.DateInput( attrs={'class' : 'form-control', 'placeholder': 'mm/dd/yyyy', 'format' : 'mm/dd/yyyy'}),
             'location' : forms.Select( attrs={'class' : 'form-control'}),
             'recievenewsletter' : forms.CheckboxInput(attrs={'class' : 'checkbox'}),
+            'skills' : forms.SelectMultiple(attrs={'class' : 'form-control'}),
+            'interests' : forms.SelectMultiple(attrs={'class' : 'form-control'})
         }
         
         labels = { 'firstname' : "First Name",
@@ -141,7 +151,7 @@ class CompanyForm(forms.ModelForm):
 class JobPostingForm(forms.ModelForm):
     class Meta:
         model = JobPosting
-        fields = ["title", "description", "pay", "wagetype", 'gpareq', 'relocationassist', 'appopendate', 'appclosingdate', 'decisiondate', 'jobstartdate', 'company', 'zipcode', 'requiredskills', 'category','ispublic']
+        fields = ["title", "description", "pay", "wagetype", 'gpareq', 'relocationassist', 'appopendate', 'appclosingdate', 'decisiondate', 'jobstartdate', 'zipcode', 'requiredskills', 'category','ispublic']
         widgets = {
             'title' : forms.TextInput( attrs={'class' : 'form-control'}),
             'description' : forms.TextInput( attrs={'class' : 'form-control'}),
@@ -153,7 +163,7 @@ class JobPostingForm(forms.ModelForm):
             'appclosingdate' : forms.DateInput( attrs={'class' : 'form-control', 'placeholder': 'mm/dd/yyyy', 'format' : 'mm/dd/yyyy'}),
             'decisiondate' : forms.DateInput( attrs={'class' : 'form-control', 'placeholder': 'mm/dd/yyyy', 'format' : 'mm/dd/yyyy'}),
             'jobstartdate' : forms.DateInput( attrs={'class' : 'form-control', 'placeholder': 'mm/dd/yyyy', 'format' : 'mm/dd/yyyy'}),
-            'company' : forms.Select( attrs={'class' : 'form-control'}),
+            #'company' : forms.Select( attrs={'class' : 'form-control'}),
             'zipcode' : forms.Select( attrs={'class' : 'form-control'}),
             'requiredskills' : forms.SelectMultiple( attrs={'class' : 'form-control'}),
             'category' : forms.SelectMultiple( attrs={'class' : 'form-control'}),
@@ -205,20 +215,133 @@ class ResumeForm(forms.ModelForm):
         }
         
 
-usertypes = (("Applicant","Applicant"),("Employer","Employer"))
-
+usertypes = (("applicant","Applicant"),("employer","Employer"),)
 
 from allauth.socialaccount.forms import SignupForm
 class UserSelectionSignupForm(SignupForm):
-    class Meta:
-        fields = ['username']
-        widgets = {
-            'username' : forms.TextInput( attrs={'class' : 'form-control'}),
-        }
-      
     
-    typeselection = forms.RadioSelect(attrs={'class' : 'form-control'}, choices=usertypes) 
+    skills = ((o.pk, o.name) for o in Skill.objects.all())
+    companies = ((o.pk, o.companyname) for o in Company.objects.all())
+    
+    firstname = forms.CharField(label='First name', max_length=100) 
+    lastname = forms.CharField(label='Last name', max_length=100) 
+    addressline1 = forms.CharField(label='Address Line 1', max_length=100) 
+    addressline2 = forms.CharField(label='Address Line 2', max_length=100) 
+    city = forms.CharField(label='City', max_length=100) 
+    state = forms.ChoiceField(widget=forms.Select(), choices=stateChoices, label="State")
+    zipcode = forms.CharField(widget =forms.NumberInput(), label='Zip Code', max_length=5) 
+    birthdate = forms.CharField(widget=forms.DateInput(format='yyyy-mm-dd'), label = 'Birth Date (yyyy-mm-dd)')
+    persontype = forms.ChoiceField(widget=forms.RadioSelect(), choices=usertypes, label="Are you an applicant or an employer?")
+    
+    # Employer section
+    employerrole = forms.CharField(label='Position', max_length=100, required=False) 
+    employerselect = forms.ChoiceField(widget=forms.Select(), choices=companies, label="Choose your company or enter it's info below", required=False)
+    employer = forms.CharField(label='Company', max_length=100, required=False) 
+    employeraddressline1 = forms.CharField(label='Company Address Line 1', max_length=100, required=False) 
+    employeraddressline2 = forms.CharField(label='Company Address Line 2', max_length=100, required=False) 
+    employercity = forms.CharField(label='Company City', max_length=100, required=False)
+    employerstate = forms.ChoiceField(widget=forms.Select(), choices=stateChoices, label="Company State", required=False)
+    employerzipcode = forms.CharField(widget =forms.NumberInput(), label='Company Zip Code', max_length=5, required=False) 
 
-    def signup(self, request, user):
+    # Applicant Section
+    
+    
+    
+    
+    apprecievenewsletter = forms.CharField(label="Would you like to recieve a newsletter?", widget=forms.CheckboxInput(), required=False)    
+    #appcategories = forms.ChoiceField(widget=forms.SelectMultiple(), choices=JobCategory.objects.all(), label="Choose job categories you are interested in", required=False)
+    appskills = forms.MultipleChoiceField(widget=forms.SelectMultiple(), choices=skills, label="Choose skills you have", required=False)
+    from django.utils.timezone import datetime
+
+    def save(self, request):
+       
+        f = request.POST    
+        # Ensure you call the parent class's save.
+        # .save() returns a User object.
         
+        newPerson = None
+        if f.get('persontype') == "employer":
+            newPerson = Employer()
+        else:
+            newPerson = Applicant()
+        newPerson.username = f.get('username')
+        newPerson.firstname = f.get('firstname')
+        newPerson.lastname = f.get('lastname')
+        newPerson.birthdate = (f.get('birthdate') + " 00:01")
+        pnewAddress = Address()
+        pnewAddress.addressline1 = f.get('addressline1')
+        pnewAddress.addressline2 = f.get('addressline2')
+        pzipz = Zip.objects.filter(code= f.get('zipcode')) 
+        if pzipz.count() == 0:
+            pzipz = Zip()
+            pzipz.code = f.get('zipcode')
+            pzipz.city = f.get('city')
+            pzipz.state = f.get('state')
+            pzipz.save()
+        else:
+            pzipz = pzipz.first()
+        pnewAddress.zipcode = pzipz
+        pnewAddress.save()
+        newPerson.location = pnewAddress
+        
+        if f.get('persontype') == "employer":
+            
+            newPerson.position = f.get('employerrole')
+            companyquery = Company.objects.filter(pk = f.get('employerselect'))
+            company = None
+            if companyquery.count() == 0:
+                company = Company()
+                company.companyname = f.get('employer')
+                newAddress = Address()
+                newAddress.addressline1 = f.get('employeraddressline1')
+                newAddress.addressline2 = f.get('employeraddressline2')
+                zipz = Zip.objects.filter(code= f.get('employerzipcode')) 
+                if zipz.count() == 0:
+                    zipz = Zip()
+                    zipz.code = f.get('employerzipcode')
+                    zipz.city = f.get('employercity')
+                    zipz.state = f.get('employerstate')
+                    zipz.save()
+                else:
+                    zipz = zipz.first()
+                newAddress.zipcode = zipz
+                newAddress.save()
+                company.location = newAddress
+                company.save()
+            else:
+                company = companyquery.first()
+            newPerson.company = company
+            newPerson.save()
+            
+        else:
+           
+            if  f.get('apprecievenewsletter') == 'on':
+                newPerson.recievenewsletter = True
+            else:
+                newPerson.recievenewsletter = False
+            newPerson.save()
+            #for jc in f.get('appcategories:
+               # jcc = JobCategory.objects.get(pk = jc)
+              #  if jcc:
+               #     newPerson.category.add(jcc)
+            if f.get('appskills') != None:
+                for s in f.get('appskills'):
+                    sc = Skill.objects.get(pk = s)
+                    if sc:
+                        newPerson.skills.add(sc)
+
+        user = super(UserSelectionSignupForm, self).save(request)
+        # Add your own processing here.
+        
+        if f.get('persontype') == "employer":
+            g = Group.objects.get(name='employer') 
+            user.groups.add(g)
+        else:
+            g = Group.objects.get(name='applicant') 
+            user.groups.add(g)
+            
         user.save()
+        newPerson.user = user
+        newPerson.save()
+        # You must return the original result.
+        return user

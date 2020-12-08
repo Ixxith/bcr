@@ -1,9 +1,11 @@
 from django.contrib.auth import login, authenticate
 from mainpages.forms import UserSelectionSignupForm
-from mainpages.models import Employer, Applicant
+from mainpages.models import Employer, Applicant, JobPosting
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from allauth.socialaccount.forms import SignupForm
+
+import datetime
 
 
 # Create your views here.
@@ -12,27 +14,12 @@ from allauth.socialaccount.forms import SignupForm
 
 # View for about page template
 
-
-
-
-def signupPageView(request):
-    breakpoint()
-    if request.method == 'POST':
-        form = UserSelectionSignupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('/')
-    else:
-        form = SignupForm()
-    return render(request, 'homepage/signup.html', {'form': form})
-
 def aboutPageView(request) :
     return render(request, 'applicationpages/about.html') 
 
+def jpPageView(request) :
+    context = {'postings' : JobPosting.objects.filter(ispublic=True)}
+    return render(request, 'applicationpages/jobpostings.html', context)
 
 # View for the index page
 
@@ -41,4 +28,7 @@ def indexPageView(request) :
     # return HttpResponse(sOutput) 
    
     return render(request, 'homepage/index.html') 
+
+
+
 

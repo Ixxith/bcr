@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import hirePageView
+from .views import applyPageView, myapplicationsPageView, profilePageView, editprofilePageView
 
 urlpatterns = [
-    # Find the hire page
-    path("", hirePageView, name="hire"),    
-    # View for creating a new job from the hire page
+    path("profile/", profilePageView, name="profile"),   
+    path("editprofile/", editprofilePageView, name="editprofile/"), 
+    path("apply/<int:jpid>/", applyPageView, name="apply/"),    
+    path("applications/", myapplicationsPageView, name="applications/"),    
    
 ] 

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<br><br><br>
+
+
+
+<div class="container well">
+	<div class="row">
+        <div class="col-sm-2" >
+		    <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="img-circle">
+        </div>
+        
+        <div class="col-sm-8">
+            <h1> {{user.person.firstname}} {{user.person.lastname}} </h1>
+            
+            <br>
+            <h5> First Name: </h5> <p>  {{user.person.firstname}} </p>
+            <h5> Last Name: </h5> <p>  {{user.person.lastname}} </p>
+            <h5> Username: </h5> <p>  {{user.person.username}} </p>
+            <h5> Birthdate: </h5> <p>  {{user.person.birthdate.date}} </p>
+            <h5> My Address: </h5> <p>  {{user.person.location.addressline1}} <br> {{user.person.location.addressline2}} <br> 
+                 {{user.person.location.zipcode.city}} {{user.person.location.zipcode.state}}, {{user.person.location.zipcode.code}}
+             </p>
+            <h5> Recieve Newsletters: </h5> <p>  {{user.person.applicant.recievenewsletter}} </p>
+            <h5> Mentor: </h5> <p>  {{user.person.applicant.mentor.firstname}} {{user.person.applicant.mentor.lastname}} </p>
+            <h5> Skills: </h5> <p class="card-text">
+                {% for skill in user.person.applicant.skills.all   %}
+                {{skill.name}} 
+                {% endfor %}
+                </p>
+            <h5> Interests: </h5> <p class="card-text">
+                {% for jc in user.person.applicant.interests.all   %}
+                {{jc.name}} 
+                {% endfor %}
+                </p>
+
+        </div>
+        
+        <div class="col-sm-2">
+            <div class="btn-group">
+                <a href = '/applicant/editprofile/' class = "btn btn-primary"> Edit Profile </a>
+            </div>
+        </div>
+</div>
+</div>
+
+
+
+{% endblock %}  
+     

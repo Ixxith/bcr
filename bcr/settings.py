@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'dal',
+    'dal_select2',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -89,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'recruit',
         'USER': 'postgres',
-        'PASSWORD': '1',
+        'PASSWORD': 'asdzxpol90',
         'HOST': 'localhost'
     }
 }
@@ -145,9 +147,13 @@ AUTHENTICATION_BACKENDS = (
  'allauth.account.auth_backends.AuthenticationBackend',
  )
 
-SITE_ID = 3
+SITE_ID = 2
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+SOCIALACCOUNT_FORMS = {
+    'signup': 'mainpages.forms.UserSelectionSignupForm'
+}
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -161,9 +167,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-SOCIALACCOUNT_FORMS = {
-    'signup': 'mainpages.forms.UserSelectionSignupForm'
-}
+
 
 SOCIALACCOUNT_AUTO_SIGNUP = False
 

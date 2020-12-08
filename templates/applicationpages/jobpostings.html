@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<br><br><br>
+<div class = "container">
+    <div class = "row">
+        <div class="col-sm-8">
+        <h1> Company Job Postings </h1>
+        </div>
+         <div class="col-sm-4">
+        
+        </div>
+     </div>
+ </div>
+ 
+{% if postings.count != 0 %}
+<div class="accordion" id="accordion">
+{% for jp in postings %}
+    <div class="card m-3">
+        <h5 class="card-header" id="header_{{jp.pk}}">
+        <button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapse_{{jp.pk}}" aria-expanded="false" aria-controls="#collapse_{{jp.pk}}">
+        Job Posting - {{jp.title}} - {{jp.company.companyname}}
+        </button>
+        </h5>
+        <div id="collapse_{{jp.pk}}" class="collapse" aria-labelledby="header_{{jp.pk}}" data-parent="#accordion" >
+            <div class="card-body">
+                <h5 class="card-title">{{jp.zipcode.city}} {{jp.zipcode.state}}, {{jp.zipcode.code}}</h5>
+                <p class="card-text"><b> Description: </b> {{jp.description}}</p>
+                <p class="card-text"><b> GPA Requirement: </b> {{jp.gpareq}}</p>
+                <p class="card-text"><b> Pay: </b> {{jp.pay}}</p>
+                <p class="card-text"><b> Wage Type: </b> {{jp.wagetype}}</p>
+                <p class="card-text"><b> Relocation Assistance Provided: </b> {{jp.relocationassist }}</p>
+                <p class="card-text"><b> Application Opening Date: </b> {{jp.appopendate.date  }}</p>
+                <p class="card-text"><b> Application Closing Date: </b> {{jp.appclosingdate.date   }}</p>
+                <p class="card-text"><b> Application Decision Date: </b> {{jp.decisiondate.date  }}</p>
+                <p class="card-text"><b> Job Start Date: </b> {{jp.jobstartdate.date   }}</p>
+                <p class="card-text"><b> Skills: </b>
+                {% for skill in jp.requiredskills.all   %}
+                <br>{{skill.name}} 
+                {% endfor %}
+                </p>
+                <p class="card-text"><b> Job Categories: </b>
+                {% for category in jp.category.all   %}
+                <br>{{category.name}} 
+                {% endfor %}
+                </p>
+                {%for g in  user.groups.all %} 
+                    {% if g.name == 'applicant' %}
+                        <a href="/applicant/apply/{{jp.pk}}" class="btn btn-primary">Apply for this job</a>
+                    {% endif %}
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+</div>
+{% else %}
+<br><br><br>
+<h2 class='text-center text-secondary'>  No job postings to display  </h2>
+<br><br><br>
+
+
+{% endif %}
+
+
+{% endblock %}  
+     
