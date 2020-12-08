@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+<div style="padding-left: 10%;">
+    <form id="inputs" name="myform" onsubmint="return false">
+        <legend>New Newsletter</legend>
+        <label for="title">Title:</label>
+        <br>
+        <input type="text" id="title" name="title">
+        <br><br>
+        <label>NewsLetter</label>
+        <br>
+        <textarea id = "myTextArea" rows = "10" cols = "80"></textarea>
+        <br><br>
+        <input type="button" value="submit" id="btnsubmit" onclick="processForm()">
+    </form>
+</div>
+</div>
+
+{% endblock %} 
