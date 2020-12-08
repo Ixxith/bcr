@@ -149,6 +149,12 @@ SITE_ID = 3
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
+SOCIALACCOUNT_FORMS = {
+    'signup': 'mainpages.forms.UserSelectionSignupForm'
+}
+
+SOCIAL_AUTH_PIPELINE = ('maingpages.views.update_user_social_data')
+
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
@@ -161,9 +167,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-SOCIALACCOUNT_FORMS = {
-    'signup': 'mainpages.forms.UserSelectionSignupForm'
-}
+
 
 SOCIALACCOUNT_AUTO_SIGNUP = False
 
