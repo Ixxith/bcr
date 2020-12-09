@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<br><br>
+<style>
+    .button {
+        background-color: #008CBA;
+        padding: 8px;
+    }
+
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 20%;
+        height: 20%;
+        padding-left: 100px;
+    }
+    
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style >
+<h1 style= "padding-left: 30%;">Application Details</h1>
+<br>
+<div style= "padding-left: 30%; padding-right: 30%;">
+    <table id="table" style="padding-left: 10%;" >
+        <tr>
+            <th>Application</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Name: </td>
+            <td>{{name}}</td>
+        </tr>
+        <tr>
+            <td>Email: </td>
+            <td>{{email}}</td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td>phone: </td>
+            <td>{{phone}}</td>
+        </tr>
+        <tr>
+            <td>skills: </td>
+            <td>{{skills}}</td>
+        </tr>
+        <tr>
+            <td>Job applied for: </td>
+            <td>{{job}}</td>
+        </table>
+</div>
+{% endblock %} 
