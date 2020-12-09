@@ -24,12 +24,9 @@ urlpatterns = [
     # Admin
     
     path('admin/', admin.site.urls),
-    # Mainpage app
     path('', include('mainpages.urls')),
     path('/accounts/social/', include('mainpages.urls')),
-    # Manage app
     path('employer/', include('employer.urls')),
-    # Hire app
     path('applicant/', include('applicant.urls')),
     path('manage/', include('management.urls')),
     url(r'^accounts/', include('allauth.urls'))

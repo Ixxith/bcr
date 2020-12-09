@@ -18,8 +18,8 @@ def aboutPageView(request) :
     return render(request, 'applicationpages/about.html') 
 
 def jpPageView(request) :
-    context = {'postings' : JobPosting.objects.filter(ispublic=True)}
-    return render(request, 'applicationpages/jobpostings.html', context)
+  context = {'postings' : JobPosting.objects.filter(ispublic=True)}
+  return render(request, 'applicationpages/jobpostings.html', context)
 
 # View for the index page
 
