@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .button {
+        background-color: #008CBA;
+        padding: 8px;
+    }
+
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 20%;
+        height: 20%;
+        padding-left: 100px;
+    }
+    
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style>
+
+<div class="masthead " style="background-image: url(https://png.pngtree.com/thumb_back/fw800/back_our/20190622/ourmid/pngtree-blue-geometric-business-atmosphere-texture-banner-background-image_213453.jpg); height: 200px;"></div>
+<br><br>
+<h1 style= "padding-left: 10%;"> List of Applicants and the applications that they have sent: </h1>
+<br>
+<div style= "padding-left: 30%; padding-right: 30%;">
+    <table id="table" style="padding-left: 10%;" >
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Applications</th>
+        </tr>
+        <tr>
+            <td>Diana Warner</td>
+            <td>alicia.r.coffey@trashymail.com</td>
+            <td> <a href="{% url 'diana' %}" style="padding-left: 20%;" >
+                <input type="button" value="View" id="btnsend" style= "background-color: blue; color: white; " >
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Tracy Wyman</td>
+            <td>karine.f.bello@mailinator.com</td>
+            <td> <a href="{% url 'tracy' %}" style="padding-left: 20%;" >
+                <input type="button" value="View" id="btnsend" style= "background-color: blue; color: white; " >
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Timmy Schmidt</td>
+            <td>bradley.g.chase@dodgit.com</td>
+            <td> <a href="{% url 'timmy' %}" style="padding-left: 20%;" >
+                <input type="button" value="View" id="btnsend" style= "background-color: blue; color: white; " >
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Steve Lewis</td>
+            <td>dana.b.narcisse@trashymail.com</td>
+            <td> <a href="{% url 'steve' %}" style="padding-left: 20%;" >
+                <input type="button" value="View" id="btnsend" style= "background-color: blue; color: white; " >
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Richard Clark</td>
+            <td>joanne.m.norton@mailinator.com</td>
+            <td> <a href="{% url 'richard' %}" style="padding-left: 20%;" >
+                <input type="button" value="View" id="btnsend" style= "background-color: blue; color: white; " >
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Warren Cromar</td>
+            <td>bernice.c.knott@pookmail.com</td>
+            <td> <a href="{% url 'warren' %}" style="padding-left: 20%;" >
+                <input type="button" value="View" id="btnsend" style= "background-color: blue; color: white; " >
+                </a>
+            </td>
+        </tr>
+            <tr>
+            <td>Patricia Bell</td>
+            <td>gregory.d.chapman@trashymail.com</td>
+            <td> <a href="{% url 'patricia' %}" style="padding-left: 20%;" >
+                <input type="button" value="View" id="btnsend" style= "background-color: blue; color: white; " >
+                </a>
+            </td>
+        </tr>
+            <tr>
+            <td>Larry Deskins</td>
+            <td>robert.b.wright@pookmail.com</td>
+            <td> <a href="{% url 'larry' %}" style="padding-left: 20%;" >
+                <input type="button" value="View" id="btnsend" style= "background-color: blue; color: white; " >
+                </a>
+            </td>
+        </tr>
+            <tr>
+            <td>Marsha Archer</td>
+            <td>stephen.o.sweet@trashymail.com</td>
+            <td> <a href="{% url 'marsha' %}" style="padding-left: 20%;" >
+                <input type="button" value="View" id="btnsend" style= "background-color: blue; color: white; " >
+                </a>
+            </td>
+        </tr>
+        </table>
+</div>
+{% endblock %} 
