@@ -31,19 +31,13 @@
 
 </script>
 <br><br><br>
-<div class = "container">
-    <div class = "row">
-        <div class="col-sm-8">
-        <h1> Company Job Postings </h1>
-        </div>
-         <div class="col-sm-4">
-        
-        </div>
-     </div>
- </div>
+
+
  
 {% if postings.count != 0 %}
-<div class="accordion" id="accordion">
+<div class = "row"> 
+<div class = "col-sm-9" id="accordion">
+<h1 style = "margin-left:10px;">   Company Job Postings </h1>
 {% for jp in postings %}
     <div class="card m-3">
         <h5 class="card-header" id="header_{{jp.pk}}">
@@ -80,9 +74,12 @@
                 {%endfor%}
             </div>
         </div>
+    
     </div>
     {%endfor%}
 </div>
+
+
 {% else %}
 <br><br><br>
 <h2 class='text-center text-secondary'>  No job postings to display  </h2>
@@ -91,59 +88,21 @@
 
 {% endif %}
 
-<br><br><br>
-
-<form id="python" method="GET" action="{% url 'azure_job' %}">
-        <td style="text-align: right; padding-left: 33%;padding-top: 2%;"><input type="submit" id="submit_matchbox" name="submit_matchbox" value="Recommend Jobs" onclick="btnclick()"></td>
-        <br>
-        <td style="padding-top: 10%;">{{matchbox_results}}</td>
-</form> 
-
-<div id = "dropdown" style="text-align: right; padding-left: 33%;padding-top: 2%;">
-    <br><br>
-    <table id="table" style="padding-left: 10%;" >
-    <tr>
-        <th>ID</th>
-        <th>UserName</th>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>adam_e_carter</td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td>alicia_r_coffey</td>
-    </tr>
-    <tr>
-        <td>4</td>
-        <td>alyssa_j_belcher</td>
-    </tr>
-    <tr>
-        <td>5</td>
-        <td>amanda_g_godfrey</td>
-    </tr>
-    <tr>
-        <td>6</td>
-        <td>anne_t_dove</td>
-    </tr>
-    <tr>
-        <td>7</td>
-        <td>annie_j_bernard</td>
-    </tr>
-        <tr>
-        <td>8</td>
-        <td>annie_j_hays</td>
-    </tr>
-        <tr>
-        <td>9</td>
-        <td>antonio_d_braithwaite</td>
-    </tr>
-        <tr>
-        <td>10</td>
-        <td>arthur_s_simon</td>
-    </tr>
-    </table>
+<div class = "col-sm-2">
+    <h4> Job Suggestions </h4>
+    <p class="text-secondary text-sm" style="font-size:10px">  We use data from your account to calculate ideal jobs for you </p>  
+    {% if suggestions|length > 0 %}
+        {% for s in suggestions %}
+             <p class='text-center'> {{s}} </p>
+        {% endfor %}
+       
+    {% else %}
+        <p class='text-center text-secondary'> No suggestions </p>
+    {% endif %}
 </div>
+</div>
+
+<br><br><br>
 
 {% endblock %}  
      

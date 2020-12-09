@@ -69,6 +69,7 @@ def azure_regression(applicant) :
         prediction = 100
     return round(prediction)
 
+import math
 
 def profilePageView(request) : 
     if request.POST:
@@ -81,19 +82,29 @@ def profilePageView(request) :
     if hirabilityscore is None:
         hirabilityscore = 0
 
-    jobquery = JobPosting.objects.none()
-
+    calenderrender = []
+    
+    
     for job in  JobPosting.objects.all():
         if job.appopendate.month == 12:
-            jobq = JobPosting.objects.filter(pk=job.pk)
-            date = job.appopendate.day
-        
+            day = job.appopendate.day
+            calenderrender.append({'row' : math.floor(day/7)+2, 'col' : (day % 7)+2, 'text' : job.title + ' - Application Open Date'})
+        if job.appclosingdate.month == 12:
+            day = job.appclosingdate.day
+            calenderrender.append({'row' : math.floor(day/7)+2, 'col' : (day % 7)+2, 'text' : job.title + ' - Application Closing Date'})
+        if job.jobstartdate.month == 12:
+            day = job.jobstartdate.day
+            calenderrender.append({'row' : math.floor(day/7)+2, 'col' : (day % 7)+2, 'text' : job.title + ' - Application Open Date'})
+        if job.decisiondate.month == 12:
+            day = job.decisiondate.day
+            calenderrender.append({'row' : math.floor(day/7)+2, 'col' : (day % 7)+2, 'text' : job.title + ' - Application Decision Date'})
 
 
     context = {
     'authenticated' : authUser(request),
     'resumes' : Resume.objects.filter(applicant=request.user.person.applicant),
-    'hirability' : hirabilityscore
+    'hirability' : hirabilityscore,
+    'calenderobjects' : calenderrender
     }
     # Render page with context
     return render(request, 'applicantpages/profile.html', context) 

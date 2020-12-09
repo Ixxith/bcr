@@ -24,10 +24,10 @@
              </p>
             <h5> Recieve Newsletters: </h5> <p>  {{user.person.applicant.recievenewsletter}} </p>
             <h5> Mentor: </h5> <p>  {{user.person.applicant.mentor.firstname}} {{user.person.applicant.mentor.lastname}} </p>
-            <h5> Hirability Score: </h5> <p> 
+            <h5> Hirability Score: </h5> 
             <div class="progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"  style="width: {{hirability}}%" aria-valuenow="{{hirability}}" aria-valuemin="0" aria-valuemax="100"> {{hirability}}%</div>
-            </div> </p>
+                <div class="progress-bar progress-bar-striped" role="progressbar"  style="width: {{hirability}}%" aria-valuenow="{{hirability}}" aria-valuemin="0" aria-valuemax="100"> {{hirability}}%</div>
+            </div> <p class="text-secondary text-sm" style="font-size:10px">  We calculate this value using the skills you marked as having and applying machine learning to it </p>
             <h5> Skills: </h5> <p class="card-text">
                 {% for skill in user.person.applicant.skills.all   %}
                 {{skill.name}} 
@@ -131,12 +131,18 @@
             <div class="day">31</div>
             <div class="day day--disabled">1</div>
             <div class="day day--disabled">2</div>
-            <section style = "border-left-color: #fdb44d; grid-column: 5 / span 1; grid-row: 2; background: #fef0db; align-self: center; color: #fc9b10; margin-top: -5px;" class="task"></section>
+            {% for event in calenderobjects %}
+            <section style = "border-left-color: #fdb44d; grid-column: {{event.col}} / span 1; grid-row: {{event.row}}; background: #fef0db; align-self: center; color: #fc9b10; margin-top: 18px;" class="task {{event.class}} "> {{event.text}} </section>            
+            {% endfor %}
+            
            
            
         </div>
     </div>
 </div>
+
+<br>
+<br>
 
 <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>
 
