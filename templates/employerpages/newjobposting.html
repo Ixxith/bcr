@@ -3,6 +3,15 @@
 {% block content %}
 <br><br><br>
 
+<style>
+
+    body{
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+}
+
+
+</style>
+
 <form class = 'm-3' method="post" action="/employer/newjobposting/" >
     {% csrf_token %}
     {{form}}

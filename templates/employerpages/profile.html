@@ -3,40 +3,154 @@
 {% block content %}
 <br><br><br>
 
+<style>
+
+    body{
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+}
 
 
-<div class="container well">
-	<div class="row">
-        <div class="col-sm-2" >
-		    <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" width = "150px" class="img-circle">
-        </div>
-        
-        <div class="col-sm-8">
-            <h1> {{user.person.firstname}} {{user.person.lastname}} </h1>
-            <h4> {{user.person.employer.position}} - {{user.person.employer.company.companyname}} </h4>
-            <br>
-            <h5> First Name: </h5> <p>  {{user.person.firstname}} </p>
-            <h5> Last Name: </h5> <p>  {{user.person.lastname}} </p>
-            <h5> Username: </h5> <p>  {{user.person.username}} </p>
-            <h5> Birthdate: </h5> <p>  {{user.person.birthdate.date}} </p>
-            <h5> My Address: </h5> <p>  {{user.person.location.addressline1}} <br> {{user.person.location.addressline2}} <br> 
-                 {{user.person.location.zipcode.city}} {{user.person.location.zipcode.state}}, {{user.person.location.zipcode.code}}
-             </p>
-            <h5> Company Location: </h5> <p>  {{user.person.employer.company.location.addressline1}} <br> {{user.person.employer.company.location.addressline2}} <br> 
-                 {{user.person.employer.company.location.zipcode.city}} {{user.person.employer.company.location.zipcode.state}}, {{user.person.employer.company.location.zipcode.code}}
-             </p>
-            <h5> Supervisor: </h5> <p>  {{user.person.employer.supervisor.firstname}} {{user.person.employer.supervisor.lastname}} </p>
-            
+</style>
 
-        </div>
-        
-        <div class="col-sm-2">
-            <div class="btn-group">
-                <a href = '/employer/editprofile/' class = "btn btn-primary"> Edit Profile </a>
+<div class="container emp-profile">
+    <form method="post">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="col-sm-2">
+                    <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" width="150px" class="img-circle" style="margin-left: 40px;">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="profile-head">
+                            <h3>
+                                {{user.person.firstname}} {{user.person.lastname}}
+                            </h3>
+                            <br>
+                            <h5> {{user.person.employer.position}} - {{user.person.employer.company.companyname}} </h5>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="btn-group">
+                    <a href = '/employer/editprofile/' class = "btn btn-primary"> Edit Profile </a>
+                </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-work">
+                        <p>JOB CATEGORIES</p>
+                    
+                        {% for jc in user.person.applicant.interests.all   %}
+                        <a href=""> {{jc.name}} </a><br/>
+                         {% endfor %}
+                </div>
+                <div class="profile-work">
+                    <p>SKILLS</p>
+                     {% for skill in user.person.applicant.skills.all   %}
+                       <a href=""> {{skill.name}} </a><br/>
+                     {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="tab-content profile-tab" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Username</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{user.person.username}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Name</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p> {{user.person.firstname}} {{user.person.lastname}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Email</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{user.email}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Birthdate</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{user.person.birthdate.date}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Address</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{user.person.location.addressline1}} <br> {{user.person.location.addressline2}} <br> 
+                 {{user.person.location.zipcode.city}} {{user.person.location.zipcode.state}}, {{user.person.location.zipcode.code}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label> Company Address</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p> {{user.person.employer.company.location.addressline1}} <br> {{user.person.employer.company.location.addressline2}} <br> 
+                 {{user.person.employer.company.location.zipcode.city}} {{user.person.employer.company.location.zipcode.state}}, {{user.person.employer.company.location.zipcode.code}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Supervisor</label>
+                                    </div>
+                                    <div class="col-md-6">
+<!--Check for mentor here--><p>{{user.person.employer.supervisor.firstname}} {{user.person.employer.supervisor.lastname}}</p>
+                                    </div>
+                                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>           
 </div>
-</div>
+
+<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>
+
+<script> 
+    $( document ).ready(function() {
+        
+        if ({{hirability}}>75){
+            $( ".progress-bar").addClass('bg-success');
+        
+        }
+        else if ({{hirability}}>50){
+            $( ".progress-bar").addClass('bg-warning');
+        }
+        else{
+            $( ".progress-bar").addClass('bg-danger');
+        }
+    })
+</script>
+
+
+<br>
+<br>
+
+
+
+
+
+     
 
 
 

@@ -13,9 +13,10 @@
      </div>
  </div>
 {% if postings.count != 0 %}
-<div class="card m-3">
+
     
     {% for jp in postings %}
+    <div class="card m-3">
     <h5 class="card-header">Job Posting - {{jp.title}}</h5>
     <div class="card-body">
         <h5 class="card-title">{{jp.zipcode.city}} {{jp.zipcode.state}}, {{jp.zipcode.code}}</h5>
@@ -47,9 +48,11 @@
             <button type="submit"  class="btn btn-danger" onclick="return confirm('Are you sure?');"> Delete Job </button>
         </form>
     </div>
-    {%endfor%}
     <br>
-</div>
+    </div>
+    {%endfor%}
+    
+
 {% else %}
 <br><br><br>
 <h2 class='text-center text-secondary'>  No job postings to display  </h2>

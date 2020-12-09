@@ -38,6 +38,13 @@
 <div class = "row"> 
 <div class = "col-sm-9" id="accordion">
 <h1 style = "margin-left:10px;">   Company Job Postings </h1>
+
+<form class = "p-5" style="width:100%">
+    <label for = "catsearch"> Search for jobs by category </label>
+    <input type="text" name="catsearch" class="form-control" placeholder="Enter a job category; technology, finance, etc.">
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
 {% for jp in postings %}
     <div class="card m-3">
         <h5 class="card-header" id="header_{{jp.pk}}">
@@ -45,6 +52,7 @@
         Job Posting - {{jp.title}} - {{jp.company.companyname}}
         </button>
         </h5>
+        
         <div id="collapse_{{jp.pk}}" class="collapse" aria-labelledby="header_{{jp.pk}}" data-parent="#accordion" >
             <div class="card-body">
                 <h5 class="card-title">{{jp.zipcode.city}} {{jp.zipcode.state}}, {{jp.zipcode.code}}</h5>

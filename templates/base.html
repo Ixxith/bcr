@@ -26,10 +26,29 @@
         <!-- Custom styles for this template -->
         <link href= "{% static 'css/landing-page.min.css' %}" rel="stylesheet ">
 
+    <style>
+        #page-container {
+        position: relative;
+        min-height: 100vh;
+        }
+
+        #content-wrap {
+        padding-bottom: 12rem;    
+        }
+
+        #footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+                   /* Footer height */
+        }
+    </style>
+
+
     </head>
     <body>
-        
-  
+        <div id="page-container">
+        <div id = "content-wrap">
 
   
 
@@ -49,6 +68,9 @@
                     </li>
                     <li class="nav-item">
                                 <a class="nav-link" href="/jobpostings">Job Postings</a>
+                    </li>
+                    <li class="nav-item">
+                                <a class="nav-link" href="/calender">Calendar</a>
                     </li>
                     {%for g in  user.groups.all %} 
                     
@@ -105,6 +127,7 @@
         <br>
         <br>
         {% if authenticated != False %}
+        
         {% block content %}
         <!-- Inside content-->
         {% endblock %}
@@ -113,10 +136,11 @@
         <p class="text-center"> Error: Not authorized for this page. </p>
         <br><br><br><br><br>
         {% endif %}
+        
        
-       
+        </div>
          <!-- Footer -->
-        <footer class="footer bg-light">
+        <footer class="footer bg-light" id = "footer">
             <div class="container">
             <div class="row">
                 <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
@@ -161,7 +185,7 @@
             </div>
             </div>
         </footer>
-
+        </div>
         <!-- Bootstrap core JavaScript -->
         <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
         <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>

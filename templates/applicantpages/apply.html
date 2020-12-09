@@ -3,13 +3,24 @@
 {% block content %}
 <br><br><br>
 
-<form class = 'm-3' method="post" action="/applicant/apply/{{jpid}}/" >
+<style>
+
+    body{
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+}
+
+
+</style>
+
+<form class = 'm-3 text-white' method="post" action="/applicant/apply/{{jpid}}/" >
     {% csrf_token %}
     {{form}}
+    <br>
     <button type="submit" class="btn btn-primary">Submit</button>
+    
 </form>
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 {% endblock %}  
      

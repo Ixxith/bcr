@@ -3,7 +3,16 @@
 {% block content %}
 <br><br><br>
 
-<form class = 'm-3' enctype="multipart/form-data" method="post" action="/applicant/newresume/" >
+<style>
+
+    body{
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+}
+
+
+</style>
+
+<form class = 'm-3  text-white' enctype="multipart/form-data" method="post" action="/applicant/newresume/" >
     {% csrf_token %}
     {{form}}
     <br>

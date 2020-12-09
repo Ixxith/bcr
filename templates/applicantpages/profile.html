@@ -3,163 +3,203 @@
 {% block content %}
 <br><br><br>
 
+<style>
+
+    body{
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+}
 
 
-<div class="container well">
-	<div class="row">
-        <div class="col-sm-2" >
-		    <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" width = "150px" class="img-circle">
-        </div>
-        
-        <div class="col-sm-8">
-            <h1> {{user.person.firstname}} {{user.person.lastname}} </h1>
-            
-            <br>
-            <h5> First Name: </h5> <p>  {{user.person.firstname}} </p>
-            <h5> Last Name: </h5> <p>  {{user.person.lastname}} </p>
-            <h5> Username: </h5> <p>  {{user.person.username}} </p>
-            <h5> Birthdate: </h5> <p>  {{user.person.birthdate.date}} </p>
-            <h5> My Address: </h5> <p>  {{user.person.location.addressline1}} <br> {{user.person.location.addressline2}} <br> 
-                 {{user.person.location.zipcode.city}} {{user.person.location.zipcode.state}}, {{user.person.location.zipcode.code}}
-             </p>
-            <h5> Recieve Newsletters: </h5> <p>  {{user.person.applicant.recievenewsletter}} </p>
-            <h5> Mentor: </h5> <p>  {{user.person.applicant.mentor.firstname}} {{user.person.applicant.mentor.lastname}} </p>
-            <h5> Hirability Score: </h5> 
-            <div class="progress">
-                <div class="progress-bar progress-bar-striped" role="progressbar"  style="width: {{hirability}}%" aria-valuenow="{{hirability}}" aria-valuemin="0" aria-valuemax="100"> {{hirability}}%</div>
-            </div> <p class="text-secondary text-sm" style="font-size:10px">  We calculate this value using the skills you marked as having and applying machine learning to it </p>
-            <h5> Skills: </h5> <p class="card-text">
-                {% for skill in user.person.applicant.skills.all   %}
-                {{skill.name}} 
-                {% endfor %}
-                </p>
-            <h5> Interests: </h5> <p class="card-text">
-                {% for jc in user.person.applicant.interests.all   %}
-                {{jc.name}} 
-                {% endfor %}
-                </p>
+</style>
 
-        </div>
-        
-        <div class="col-sm-2">
-            <div class="btn-group">
-                <a href = '/applicant/editprofile/' class = "btn btn-primary"> Edit Profile </a>
+<div class="container emp-profile">
+    <form method="post">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="col-sm-2">
+                    <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" width="150px" class="img-circle" style="margin-left: 40px;">
+                </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <h2 style = "display:inline;"> Resumes </h2>
-    <a href = '/applicant/newresume/' class = "float-right btn btn-primary"> Create Resume  </a>
-    {% if resumes.count != 0 %}
-    {% for resume in  resumes %}
-        <div class="card">
-            <div class = "card-header"> 
-
-                    <h4 style = "display:inline;"> Resume - {{resume.name}}</h4> 
-                
-                
-                   
-                   
-                    <form action="/applicant/profile/"  style = "display:inline;" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" id="rid" name="rid" value="{{resume.pk}}"/> 
-                        <button type="submit" onclick="return confirm('Are you sure? This will remove any job applications attached to this resume');"  class="float-right btn btn-danger"> Delete Resume </button>
-                    </form>
-                    <a href = '/applicant/editresume/{{resume.pk}}' class = "float-right btn btn-primary"> Edit Resume  </a>
-                    
+            <div class="col-md-6">
+                <div class="profile-head">
+                            <h3>
+                                {{user.person.firstname}} {{user.person.lastname}}
+                            </h3>
+                            <br>
+                            <h7> Hirability Score: </h7> <p> 
+                            </p><div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{hirability}}%" aria-valuenow=" {{hirability}}" aria-valuemin="0" aria-valuemax="100">  {{hirability}}%</div>
+                                 
+                            </div> <p class="text-secondary text-sm ml-1" style="font-size:10px"> This predictive value is calculated from your personal information </p>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Resumes</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class = "card-body"> 
-                <a class="btn btn-primary" data-toggle="collapse" href="#collapse_{{resume.pk}}" role="button" aria-expanded="false" aria-controls="collapse_{{resume.pk}}">
-                    Toggle Resume
-                </a>
-
-                <div class="collapse" id="collapse_{{resume.pk}}">
-                    <br>
-                    <iframe src="{{resume.resumefile.url}}/" style="width:100%; height:700px;" frameborder="0"></iframe>
+            <div class="col-md-2">
+                <div class="btn-group">
+                    <a href = '/applicant/editprofile/' class = "btn btn-primary"> Edit Profile </a>
                 </div>
             </div>
         </div>
-    {% endfor %}
-    {% else %}
-    <br><br><br>
-    <h2 class='text-center text-secondary'>  No resumes to display  </h2>
-    <br><br><br>
-    {% endif %}
-</div>
-<div class="container"> 
-<h2 style = "display:inline;"> Job Posting Calender </h2> <br><br>
-    <div class="calendar-container">
-        <div class="calendar-header">
-            <h1> December</h1>
-            <p>2020</p>
-        </div>
-        <div class="calendar"><span class="day-name">Sun</span><span class="day-name">Mon</span><span class="day-name">Tue</span><span class="day-name">Wed</span><span class="day-name">Thu</span><span class="day-name">Fri</span><span class="day-name">Sat</span>
-            <div class="day day--disabled">30</div>
-            <div class="day day--disabled">31</div>
-            <div class="day">1</div>
-            <div class="day">2</div>
-            <div class="day">3</div>
-            <div class="day">4</div>
-            <div class="day">5</div>
-            <div class="day">6</div>
-            <div class="day">7</div>
-            <div class="day">8</div>
-            <div class="day">9</div>
-            <div class="day">10</div>
-            <div class="day">11</div>
-            <div class="day">12</div>
-            <div class="day">13</div>
-            <div class="day">14</div>
-            <div class="day">15</div>
-            <div class="day">16</div>
-            <div class="day">17</div>
-            <div class="day">18</div>
-            <div class="day">19</div>
-            <div class="day">20</div>
-            <div class="day">21</div>
-            <div class="day">22</div>
-            <div class="day">23</div>
-            <div class="day">24</div>
-            <div class="day">25</div>
-            <div class="day">26</div>
-            <div class="day">27</div>
-            <div class="day">28</div>
-            <div class="day">29</div>
-            <div class="day">30</div>
-            <div class="day">31</div>
-            <div class="day day--disabled">1</div>
-            <div class="day day--disabled">2</div>
-            {% for event in calenderobjects %}
-            <section style = "border-left-color: #fdb44d; grid-column: {{event.col}} / span 1; grid-row: {{event.row}}; background: #fef0db; align-self: center; color: #fc9b10; margin-top: 18px;" class="task {{event.class}} "> {{event.text}} </section>            
-            {% endfor %}
-            
-           
-           
-        </div>
-    </div>
-</div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-work">
+                        <p>JOB CATEGORIES</p>
+                    
+                        {% for jc in user.person.applicant.interests.all   %}
+                        <a href=""> {{jc.name}} </a><br/>
+                         {% endfor %}
+                </div>
+                <div class="profile-work">
+                    <p>SKILLS</p>
+                     {% for skill in user.person.applicant.skills.all   %}
+                       <a href=""> {{skill.name}} </a><br/>
+                     {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="tab-content profile-tab" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Username</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{user.person.username}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Name</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p> {{user.person.firstname}} {{user.person.lastname}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Email</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{user.email}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Birthdate</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{user.person.birthdate.date}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Address</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{user.person.location.addressline1}} <br> {{user.person.location.addressline2}} <br> 
+                 {{user.person.location.zipcode.city}} {{user.person.location.zipcode.state}}, {{user.person.location.zipcode.code}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Recieve Newsletters</label>
+                                    </div>
+                                    <div class="col-md-6">
+<!--Ian this will need to be teh check box--><p>{{user.person.applicant.recievenewsletter}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Mentor</label>
+                                    </div>
+                                    <div class="col-md-6">
+<!--Check for mentor here--><p>{{user.person.applicant.mentor.firstname}} {{user.person.applicant.mentor.firstname}}</p>
+                                    </div>
+                                </div>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div>
+                        <a href = '/applicant/newresume/' class = "btn btn-primary"> Create Resume  </a>
+                        
+                        </div>
+                        <br>
+                        <div class="row">
+                                
+                                
+                                <br>
+                                {% if resumes.count != 0 %}
+                                {% for resume in  resumes %}
+                                    <div class="card m-3" style="width:95%">
+                                        <div class = "card-header"> 
 
-<br>
-<br>
+                                                <h4 style = "display:inline;"> Resume - {{resume.name}}</h4> 
+                
+                
+                   
+                                
+                                    <form action="/applicant/profile/"  style = "display:inline;" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" id="rid" name="rid" value="{{resume.pk}}"/> 
+                                        <button type="submit" onclick="return confirm('Are you sure? This will remove any job applications attached to this resume');"  class="ml-2 p-2 float-right btn btn-danger"> Delete Resume </button>
+                                    </form>
+                                    <a href = '/applicant/editresume/{{resume.pk}}' class = "float-right btn btn-primary p-2"> Edit Resume  </a>
+                                                            
+                                    </div>
+                                    <div class = "card-body"> 
+                                        <a class="btn btn-primary" data-toggle="collapse" href="#collapse_{{resume.pk}}" role="button" aria-expanded="false" aria-controls="collapse_{{resume.pk}}">
+                                            Toggle Resume
+                                        </a>
+
+                                    <div class="collapse" id="collapse_{{resume.pk}}">
+                                        <br>
+                                        <iframe src="{{resume.resumefile.url}}/" style="width:100%; height:700px;" frameborder="0"></iframe>
+                                    </div>
+                                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    {% else %}
+                                    <br><br><br>
+                                    <h2 class='text-center text-secondary'>  No resumes to display  </h2>
+                                    <br><br><br>
+                                    {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>           
+</div>
 
 <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>
 
 <script> 
-    bar = $( ".progress-bar")[0];
-    if ({{hirability}}>75){
-        $( ".progress-bar").addClass('bg-success');
-    
-    }
-    else if ({{hirability}}>50){
-        $( ".progress-bar").addClass('bg-warning');
-    }
-    else{
-        $( ".progress-bar").addClass('bg-danger');
-    }
-    
+    $( document ).ready(function() {
+        
+        if ({{hirability}}>75){
+            $( ".progress-bar").addClass('bg-success');
+        
+        }
+        else if ({{hirability}}>50){
+            $( ".progress-bar").addClass('bg-warning');
+        }
+        else{
+            $( ".progress-bar").addClass('bg-danger');
+        }
+    })
 </script>
+
+
+<br>
+<br>
+
+
 
 
 {% endblock %}  

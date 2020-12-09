@@ -15,10 +15,7 @@
     }
 </script>
 <style>
-    .button {
-        background-color: #008CBA;
-        padding: 8px;
-    }
+    
 
     table {
         font-family: arial, sans-serif;
@@ -44,25 +41,25 @@
     
 <br>
 <br>
-<div style="padding-left: 10%;">
+<div class="container">
     <form id="inputs" name="myform" onsubmint="return false">
         <legend>New Newsletter</legend>
         <br>
         <label for="title">Title:</label>
         <br>
-        <input type="text" id="title" name="title" style="max-width: 55%;">
+        <input class="form-control" type="text" id="title" name="title" style="max-width: 55%;">
         <br><br> 
         <label>NewsLetter</label>
         <br>
-        <textarea id = "myTextArea" rows = "10" cols = "80"></textarea>
+        <textarea class="form-control" id = "myTextArea" rows = "10" cols = "80"></textarea>
         <br><br>
-        <input type="button" value="Add Recipients" id="btnsubmit" onclick="processForm()" style="max-width: 120px; background-color: blue; color: white"">
+        <input type="button" value="Add Recipients" id="btnsubmit" onclick="processForm()" class="btn btn-primary">
     </form>
     <br>
     
-<div id = "dropdown" style="display: none;">
+<div id = "dropdown" <div class="container" style="display: none;">
     <br><br>
-    <table id="table" style="padding-left: 10%;" >
+    <table class="table" id="table">
     <tr>
         <th>Name</th>
         <th>Email</th>
@@ -116,8 +113,9 @@
     </table>
     <br>
     <a href="{% url 'send' %}">
-    <input type="button" value="Send" id="btnsend" style="max-width: 115px; background-color: blue; color: white">
+    <input type="button" value="Send" id="btnsend" class="btn btn-primary">
     </a>
+    <br>
     <br>
     
 </div>
