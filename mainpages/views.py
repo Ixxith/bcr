@@ -1,6 +1,7 @@
 from django.contrib.auth import login, authenticate
+from django.http import HttpResponseRedirect
 from mainpages.forms import UserSelectionSignupForm
-from mainpages.models import Employer, Applicant, JobPosting
+from mainpages.models import Employer, Applicant, JobPosting, JobCategory
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from allauth.socialaccount.forms import SignupForm
@@ -85,8 +86,19 @@ def calPageView(request) :
 
 
 def jpPageView(request) :
-  context = {'postings' : JobPosting.objects.filter(ispublic=True),
-             'suggestions' : azure_matchbox(request)}
+  
+  jpq = JobPosting.objects.filter(ispublic=True)
+
+  if request.GET.get("jobcat") != None and request.GET.get("jobcat") != '' :
+    jpq = JobPosting.objects.none()
+    jcList = JobCategory.objects.filter(name=request.GET.get("jobcat"))
+    for jp in JobPosting.objects.filter(ispublic=True):
+      for jc in jcList:
+        if jc in jp.category.all():
+          jpq = jpq.union(JobPosting.objects.filter(pk=jp.pk))
+  
+  context = {'postings' : jpq,
+             'suggestions' : azure_matchbox(request), "cat": request.GET.get("jobcat")}
   
  
   return render(request, 'applicationpages/jobpostings.html', context)
@@ -96,7 +108,8 @@ def jpPageView(request) :
 def indexPageView(request) :
     # sOutput = '<html><head><title>Main Page</title></head><body><p>This is the index page' + menu +'</body></html>'
     # return HttpResponse(sOutput) 
-   
+    if request.GET.get("jobcat") != None:
+       return HttpResponseRedirect('/jobpostings/?jobcat='+request.GET.get("jobcat"))
     return render(request, 'homepage/index.html') 
 
 

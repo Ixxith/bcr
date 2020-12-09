@@ -2,31 +2,14 @@
 {% load static %}
 {% block content %}
 
-<div class="masthead " style="background-image: url(https://png.pngtree.com/thumb_back/fw800/back_our/20190622/ourmid/pngtree-blue-geometric-business-atmosphere-texture-banner-background-image_213453.jpg); height: 200px;"></div>
+
 <style>
-    body {
-    text-align: center;
-    }
 
-    form {
-    display: inline-block;
-    } 
+    body{
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+}
 
-    table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
 
-    }
-    
-    td, th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-    }
-    
-    tr:nth-child(even) {
-        background-color: #dddddd;
-    } 
 </style>
 
 </script>
@@ -34,28 +17,62 @@
 
 
  
-{% if postings.count != 0 %}
-<div class = "row"> 
-<div class = "col-sm-9" id="accordion">
-<h1 style = "margin-left:10px;">   Company Job Postings </h1>
 
-<form class = "p-5" style="width:100%">
-    <label for = "catsearch"> Search for jobs by category </label>
-    <input type="text" name="catsearch" class="form-control" placeholder="Enter a job category; technology, finance, etc.">
-    <button type="submit" class="btn btn-primary">Search</button>
-</form>
+<div style = "margin-right:0" class = "row"> 
+<div style = "display: inline-table;" class ='jobpostingcard col-sm-2 pl-3 pr-3 ml-5 mr-3'>
+    <form action = "/jobpostings/" method = "get" class = "p-2" style="width:100%">
+        <label for = "jobcat"> Search for jobs by category </label>
+        <input type="text" name="jobcat" style="width:70%; display:inline;" class="form-control" value = {{cat}}>  </input>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+<div class = "col-sm-7" id="accordion">
+{% if postings.count != 0 %}
+<h1 style = "margin-left:10px;" class='text-white'>  Company Job Postings  </h1>
+
+<div class='row'>
 
 {% for jp in postings %}
-    <div class="card m-3">
-        <h5 class="card-header" id="header_{{jp.pk}}">
-        <button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapse_{{jp.pk}}" aria-expanded="false" aria-controls="#collapse_{{jp.pk}}">
-        Job Posting - {{jp.title}} - {{jp.company.companyname}}
-        </button>
-        </h5>
-        
-        <div id="collapse_{{jp.pk}}" class="collapse" aria-labelledby="header_{{jp.pk}}" data-parent="#accordion" >
-            <div class="card-body">
-                <h5 class="card-title">{{jp.zipcode.city}} {{jp.zipcode.state}}, {{jp.zipcode.code}}</h5>
+    <div style="max-width:49%" class="card jobpostingcard ml-1 col-sm-6">
+    
+    <div class = "skillcontainer">
+    
+    {% for category in jp.category.all   %}
+
+    <div class="category">{{category.name}} </div>
+    {% endfor %}
+    </div>
+    <br>
+    <h2 style="font-size:1.5rem" class='lead'> 
+        {{jp.title}}
+    </h2>
+    <h2 style="font-size:1.15rem" class='lead'> 
+        {{jp.company.companyname}}
+    </h2>
+    
+
+     <div class = "skillcontainer">
+    {% for skill in jp.requiredskills.all   %}
+    <p class = "lead" style="display:inline; font-size:.85rem"> Skills Required: </p>
+    <div class="skill">{{skill.name}} </div>
+    {% endfor %}
+    </div>
+    <br>
+    <button type="button" class="btn btn-primary m-1" style="display:inline; width:45%" data-toggle="modal" data-target="#jp-{{jp.pk}}">
+        View more information
+    </button>
+
+    <div class="modal fade" id="jp-{{jp.pk}}" tabindex="-1" role="dialog" aria-labelledby="#jp-{{jp.pk}}-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="#jp-{{jp.pk}}-title">Job Posting</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+                <p class="card-text"><b> Location: </b> {{jp.zipcode.city}} {{jp.zipcode.state}}, {{jp.zipcode.code}}</b>
                 <p class="card-text"><b> Description: </b> {{jp.description}}</p>
                 <p class="card-text"><b> GPA Requirement: </b> {{jp.gpareq}}</p>
                 <p class="card-text"><b> Pay: </b> {{jp.pay}}</p>
@@ -65,23 +82,26 @@
                 <p class="card-text"><b> Application Closing Date: </b> {{jp.appclosingdate.date   }}</p>
                 <p class="card-text"><b> Application Decision Date: </b> {{jp.decisiondate.date  }}</p>
                 <p class="card-text"><b> Job Start Date: </b> {{jp.jobstartdate.date   }}</p>
-                <p class="card-text"><b> Skills: </b>
-                {% for skill in jp.requiredskills.all   %}
-                <br>{{skill.name}} 
-                {% endfor %}
-                </p>
-                <p class="card-text"><b> Job Categories: </b>
-                {% for category in jp.category.all   %}
-                <br>{{category.name}} 
-                {% endfor %}
-                </p>
-                {%for g in  user.groups.all %} 
-                    {% if g.name == 'applicant' %}
-                        <a href="/applicant/apply/{{jp.pk}}" class="btn btn-primary">Apply for this job</a>
-                    {% endif %}
-                {%endfor%}
-            </div>
+                
         </div>
+        <div class="modal-footer">
+            {%for g in  user.groups.all %} 
+            {% if g.name == 'applicant' %}
+            <a href="/applicant/apply/{{jp.pk}}" style="display:inline" class="m-1 btn btn-success">Apply </a>
+            {% endif %}
+            {%endfor%}
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            
+        </div>
+        </div>
+    </div>
+    </div>
+
+    {%for g in  user.groups.all %} 
+        {% if g.name == 'applicant' %}
+            <a href="/applicant/apply/{{jp.pk}}" style="display:inline; width:35%" class="m-1 btn btn-success">Apply </a>
+        {% endif %}
+    {%endfor%}
     
     </div>
     {%endfor%}
@@ -90,13 +110,13 @@
 
 {% else %}
 <br><br><br>
-<h2 class='text-center text-secondary'>  No job postings to display  </h2>
+<h2 class='text-center text-white'>  No job postings to display  </h2>
 <br><br><br>
 
 
 {% endif %}
-
-<div class = "col-sm-2">
+</div>
+<div style = "display: inline-table;" class ='jobpostingcard col-sm-2 pl-3 pr-3 ml-5 mr-3'>
     <h4> Job Suggestions </h4>
     <p class="text-secondary text-sm" style="font-size:10px">  We use data from your account to calculate ideal jobs for you </p>  
     {% if suggestions|length > 0 %}

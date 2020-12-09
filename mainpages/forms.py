@@ -157,7 +157,7 @@ class JobPostingForm(forms.ModelForm):
             'description' : forms.TextInput( attrs={'class' : 'form-control'}),
             'pay' : forms.NumberInput( attrs={'class' : 'form-control'}),
             'wagetype' : forms.TextInput( attrs={'class' : 'form-control'}),
-            'gpareq' : forms.TextInput( attrs={'class' : 'form-control'}),
+            'gpareq' : forms.NumberInput( attrs={'class' : 'form-control',"max": 3.5}),
             'relocationassist' : forms.CheckboxInput(attrs={'class' : 'checkbox'}),
             'appopendate' : forms.DateInput( attrs={'class' : 'form-control', 'placeholder': 'mm/dd/yyyy', 'format' : 'mm/dd/yyyy'}),
             'appclosingdate' : forms.DateInput( attrs={'class' : 'form-control', 'placeholder': 'mm/dd/yyyy', 'format' : 'mm/dd/yyyy'}),

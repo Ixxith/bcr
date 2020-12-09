@@ -13,7 +13,7 @@ class MySignupView(SignupView):
 urlpatterns = [
     path("", indexPageView, name="index"),
     path("about", aboutPageView, name="about"), 
-    path("jobpostings", jpPageView, name="/jobpostings"),
+    path("jobpostings/", jpPageView, name="/jobpostings"),
     path("calender", calPageView, name="/calender"),
    # path("matchbox/", azure_matchbox, name="azure_job"),
     url(r'^accounts/social/signup', MySignupView.as_view(), name='socialaccount_signup'),
