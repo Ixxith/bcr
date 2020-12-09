@@ -32,8 +32,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'dal',
-    'dal_select2',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -44,11 +42,15 @@ INSTALLED_APPS = [
     'applicant.apps.applicantConfig',
     'mainpages.apps.MainpagesConfig',
     'management.apps.ManagementConfig',
-    'allauth',   # <--
+    'allauth',
+    'schedule',
+    'numpy',
     'allauth.account',   # <--
     'allauth.socialaccount',   # <--
     'allauth.socialaccount.providers.google',
 ]
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -146,6 +148,9 @@ AUTHENTICATION_BACKENDS = (
  'django.contrib.auth.backends.ModelBackend',
  'allauth.account.auth_backends.AuthenticationBackend',
  )
+
+MEDIA_ROOT = os.path.join(BASE_DIR, '')
+MEDIA_URL = '/uploads/'
 
 SITE_ID = 2
 LOGIN_REDIRECT_URL = '/'

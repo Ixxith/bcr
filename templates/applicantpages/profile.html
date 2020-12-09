@@ -24,6 +24,10 @@
              </p>
             <h5> Recieve Newsletters: </h5> <p>  {{user.person.applicant.recievenewsletter}} </p>
             <h5> Mentor: </h5> <p>  {{user.person.applicant.mentor.firstname}} {{user.person.applicant.mentor.lastname}} </p>
+            <h5> Hirability Score: </h5> <p> 
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"  style="width: {{hirability}}%" aria-valuenow="{{hirability}}" aria-valuemin="0" aria-valuemax="100"> {{hirability}}%</div>
+            </div> </p>
             <h5> Skills: </h5> <p class="card-text">
                 {% for skill in user.person.applicant.skills.all   %}
                 {{skill.name}} 
@@ -42,9 +46,114 @@
                 <a href = '/applicant/editprofile/' class = "btn btn-primary"> Edit Profile </a>
             </div>
         </div>
-</div>
+    </div>
 </div>
 
+<div class="container">
+    <h2 style = "display:inline;"> Resumes </h2>
+    <a href = '/applicant/newresume/' class = "float-right btn btn-primary"> Create Resume  </a>
+    {% if resumes.count != 0 %}
+    {% for resume in  resumes %}
+        <div class="card">
+            <div class = "card-header"> 
+
+                    <h4 style = "display:inline;"> Resume - {{resume.name}}</h4> 
+                
+                
+                   
+                   
+                    <form action="/applicant/profile/"  style = "display:inline;" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" id="rid" name="rid" value="{{resume.pk}}"/> 
+                        <button type="submit" onclick="return confirm('Are you sure? This will remove any job applications attached to this resume');"  class="float-right btn btn-danger"> Delete Resume </button>
+                    </form>
+                    <a href = '/applicant/editresume/{{resume.pk}}' class = "float-right btn btn-primary"> Edit Resume  </a>
+                    
+            </div>
+            <div class = "card-body"> 
+                <a class="btn btn-primary" data-toggle="collapse" href="#collapse_{{resume.pk}}" role="button" aria-expanded="false" aria-controls="collapse_{{resume.pk}}">
+                    Toggle Resume
+                </a>
+
+                <div class="collapse" id="collapse_{{resume.pk}}">
+                    <br>
+                    <iframe src="{{resume.resumefile.url}}/" style="width:100%; height:700px;" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% else %}
+    <br><br><br>
+    <h2 class='text-center text-secondary'>  No resumes to display  </h2>
+    <br><br><br>
+    {% endif %}
+</div>
+<div class="container"> 
+<h2 style = "display:inline;"> Job Posting Calender </h2> <br><br>
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <h1> December</h1>
+            <p>2020</p>
+        </div>
+        <div class="calendar"><span class="day-name">Sun</span><span class="day-name">Mon</span><span class="day-name">Tue</span><span class="day-name">Wed</span><span class="day-name">Thu</span><span class="day-name">Fri</span><span class="day-name">Sat</span>
+            <div class="day day--disabled">30</div>
+            <div class="day day--disabled">31</div>
+            <div class="day">1</div>
+            <div class="day">2</div>
+            <div class="day">3</div>
+            <div class="day">4</div>
+            <div class="day">5</div>
+            <div class="day">6</div>
+            <div class="day">7</div>
+            <div class="day">8</div>
+            <div class="day">9</div>
+            <div class="day">10</div>
+            <div class="day">11</div>
+            <div class="day">12</div>
+            <div class="day">13</div>
+            <div class="day">14</div>
+            <div class="day">15</div>
+            <div class="day">16</div>
+            <div class="day">17</div>
+            <div class="day">18</div>
+            <div class="day">19</div>
+            <div class="day">20</div>
+            <div class="day">21</div>
+            <div class="day">22</div>
+            <div class="day">23</div>
+            <div class="day">24</div>
+            <div class="day">25</div>
+            <div class="day">26</div>
+            <div class="day">27</div>
+            <div class="day">28</div>
+            <div class="day">29</div>
+            <div class="day">30</div>
+            <div class="day">31</div>
+            <div class="day day--disabled">1</div>
+            <div class="day day--disabled">2</div>
+            <section style = "border-left-color: #fdb44d; grid-column: 5 / span 1; grid-row: 2; background: #fef0db; align-self: center; color: #fc9b10; margin-top: -5px;" class="task"></section>
+           
+           
+        </div>
+    </div>
+</div>
+
+<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>
+
+<script> 
+    bar = $( ".progress-bar")[0];
+    if ({{hirability}}>75){
+        $( ".progress-bar").addClass('bg-success');
+    
+    }
+    else if ({{hirability}}>50){
+        $( ".progress-bar").addClass('bg-warning');
+    }
+    else{
+        $( ".progress-bar").addClass('bg-danger');
+    }
+    
+</script>
 
 
 {% endblock %}  

@@ -52,12 +52,18 @@ class Administrator(Person):
 class Applicant(Person):
     recievenewsletter = models.BooleanField(blank=False, null=False) 
     mentor = models.ForeignKey('self', on_delete=models.DO_NOTHING) 
-    skills = models.ManyToManyField(Skill) 
+    skills = models.ManyToManyField(Skill, through="ApplicantSkills") 
+
+class ApplicantSkills(models.Model):
+    applicant = models.ForeignKey(Applicant, on_delete=models.CASCADE)
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
+    skillrating = models.IntegerField(null=True, default=1)
+
 
 
 class Resume(models.Model):
     name = models.CharField(max_length=100, blank=False, null=False)
-    file = models.CharField(max_length=200, blank=False, null=False)
+    resumefile = models.FileField(upload_to='uploads/', null=True)
     applicant = models.ForeignKey(Applicant,  on_delete=models.CASCADE)
     
     def __str__(self):
@@ -104,8 +110,8 @@ class Application(models.Model):
     submitdate = models.DateTimeField(blank=False, null=False)  
     status = models.CharField(max_length=50, blank=False, null=False)
     autoapply = models.ForeignKey(AutoApply, on_delete=models.DO_NOTHING, null=True)
-    resume = models.ForeignKey(Resume, on_delete=models.DO_NOTHING)
-    applicant = models.ForeignKey(Applicant, on_delete=models.DO_NOTHING)
+    resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
+    applicant = models.ForeignKey(Applicant, on_delete=models.CASCADE)
 
 class ContactInformation(models.Model):
     person = models.ForeignKey(Person, on_delete=models.DO_NOTHING) 

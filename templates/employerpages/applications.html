@@ -27,9 +27,18 @@
         <p class="card-text"><b> Application Decision Date: </b> {{app.jobposting.decisiondate.date  }}</p>
         <p class="card-text"><b> Job Start Date: </b> {{app.jobposting.jobstartdate.date   }}</p>
         <br>
-        <p class="card-text"><b> Resume: </b> {{app.resume.name}}</p>
-    
+        <div>
+            <a class="btn btn-primary" data-toggle="collapse" href="#collapse_{{app.pk}}" role="button" aria-expanded="false" aria-controls="collapse_{{resume.pk}}">
+                    Toggle Resume
+                </a>
 
+                <div class="collapse" id="collapse_{{app.pk}}">
+                    <br>
+                    <iframe src="{{app.resume.resumefile.url}}/" style="width:100%; height:700px;" frameborder="0"></iframe>
+                </div>
+            
+        </div>
+        <br>
         <form action="/employer/applications/"  style = "display:inline;" method="post">
             {% csrf_token %}
             <input type="hidden" id="appid" name="appid" value="{{app.pk}}">

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<br><br><br>
+
+<form class = 'm-3' enctype="multipart/form-data" method="post" action="/applicant/newresume/" >
+    {% csrf_token %}
+    {{form}}
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+
+{% endblock %}  
+     

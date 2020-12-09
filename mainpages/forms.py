@@ -1,5 +1,5 @@
 from django import forms
-from .models import Skill, Newsletter, Administrator, Employer, Applicant, Zip, Address, Company, JobPosting, JobCategory, Application, AutoApply, Resume 
+from .models import Skill, Newsletter, Administrator, Employer, Applicant, Zip, Address, Company, JobPosting, JobCategory, Application, AutoApply, Resume, ApplicantSkills 
 from django.contrib.auth.models import Group
 
 stateChoices = (("AL","Alabama"),	("AK","Alaska"),	("AZ","Arizona"),	("AR","Arkansas"),	("CA","California"),	("CO","Colorado"),	("CT","Connecticut"),	("DE","Delaware"),	("FL","Florida"),	("GA","Georgia"),	("HI","Hawaii"),	("ID","Idaho"),	("IL","Illinois"),	("IN","Indiana"),	("IA","Iowa"),	("KS","Kansas"),	("KY","Kentucky"),	("LA","Louisiana"),	("ME","Maine"),	("MD","Maryland"),	("MA","Massachusetts"),	("MI","Michigan"),	("MN","Minnesota"),	("MS","Mississippi"),	("MO","Missouri"),	("MT","Montana"),	("NE","Nebraska"),	("NV","Nevada"),	("NH","New Hampshire"),	("NJ","New Jersey"),	("NM","New Mexico"),	("NY","New York"),	("NC","North Carolina"),	("ND","North Dakota"),	("OH","Ohio"),	("OK","Oklahoma"),	("OR","Oregon"),	("PA","Pennsylvania"),	("RI","Rhode Island"),	("SC","South Carolina"),	("SD","South Dakota"),	("TN","Tennessee"),	("TX","Texas"),	("UT","Utah"),	("VT","Vermont"),	("VA","Virginia"),	("WA","Washington"),	("WV","West Virginia"),	("WI","Wisconsin"),	("WY","Wyoming"))
@@ -209,11 +209,13 @@ class AutoApplyForm(forms.ModelForm):
 class ResumeForm(forms.ModelForm):
     class Meta:
         model = Resume
-        fields = ['file']
+        fields = ['name', 'resumefile']
         widgets = {
-            'file' : forms.TextInput( attrs={'class' : 'form-control'}),
+            'name' : forms.TextInput( attrs={'class' : 'form-control'}),
+            'resumefile' : forms.FileInput( attrs={'class' : 'form-control', 'accept' :".pdf"}),
         }
-        
+        labels = { 'name' : 'Resume Name',
+                   'resumefile' : 'Upload the resume file (pdfs only)'}
 
 usertypes = (("applicant","Applicant"),("employer","Employer"),)
 
@@ -222,6 +224,7 @@ class UserSelectionSignupForm(SignupForm):
     
     skills = ((o.pk, o.name) for o in Skill.objects.all())
     companies = ((o.pk, o.companyname) for o in Company.objects.all())
+    jchoices = ((o.pk, o.name) for o in JobCategory.objects.all())
     
     firstname = forms.CharField(label='First name', max_length=100) 
     lastname = forms.CharField(label='Last name', max_length=100) 
@@ -249,7 +252,7 @@ class UserSelectionSignupForm(SignupForm):
     
     
     apprecievenewsletter = forms.CharField(label="Would you like to recieve a newsletter?", widget=forms.CheckboxInput(), required=False)    
-    #appcategories = forms.ChoiceField(widget=forms.SelectMultiple(), choices=JobCategory.objects.all(), label="Choose job categories you are interested in", required=False)
+    appcategories = forms.MultipleChoiceField(widget=forms.SelectMultiple(), choices=jchoices, label="Choose job categories you are interested in", required=False)
     appskills = forms.MultipleChoiceField(widget=forms.SelectMultiple(), choices=skills, label="Choose skills you have", required=False)
     from django.utils.timezone import datetime
 
@@ -314,22 +317,22 @@ class UserSelectionSignupForm(SignupForm):
             newPerson.save()
             
         else:
-           
+            
             if  f.get('apprecievenewsletter') == 'on':
                 newPerson.recievenewsletter = True
             else:
                 newPerson.recievenewsletter = False
             newPerson.save()
-            #for jc in f.get('appcategories:
-               # jcc = JobCategory.objects.get(pk = jc)
-              #  if jcc:
-               #     newPerson.category.add(jcc)
+            for jc in f.get('appcategories'):
+                jcc = JobCategory.objects.get(pk = jc)
+                if jcc:
+                    newPerson.interests.add(jcc)
             if f.get('appskills') != None:
                 for s in f.get('appskills'):
                     sc = Skill.objects.get(pk = s)
                     if sc:
-                        newPerson.skills.add(sc)
-
+                        newskill = ApplicantSkills(applicant=newPerson, skill=sc, skillrating=5)
+        
         user = super(UserSelectionSignupForm, self).save(request)
         # Add your own processing here.
         
