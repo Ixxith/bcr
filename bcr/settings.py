@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
+import django_heroku 
+import dj_database_url
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'v!e$)s#fanu5h$e2zcl2er7y(*$d+aznj&_t=-^w5$$1^8nuho'
+SECRET_KEY = os.environ.get('SECRET_KEY')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -34,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'dal',
     'dal_select2',
+    'whitenoise.runserver_nostatic', 
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -56,6 +63,7 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -100,6 +108,8 @@ DATABASES = {
     }
 }
 
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -154,7 +164,7 @@ AUTHENTICATION_BACKENDS = (
 MEDIA_ROOT = os.path.join(BASE_DIR, '')
 MEDIA_URL = '/uploads/'
 
-SITE_ID = 2
+SITE_ID = 3
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
@@ -174,7 +184,8 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'bcrec.herokuapp.com', 'bcrecruiter.herokuapp.com'] 
 
 SOCIALACCOUNT_AUTO_SIGNUP = False
 
+django_heroku.settings(locals()) 
