@@ -154,6 +154,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'mainpages/static')
 ] 
 
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'bcrec.herokuapp.com', 'bcrecruiter.herokuapp.com'] 
+
+django_heroku.settings(locals()) 
+
 # AUTHENTICATION
 
 AUTHENTICATION_BACKENDS = (
@@ -164,7 +168,7 @@ AUTHENTICATION_BACKENDS = (
 MEDIA_ROOT = os.path.join(BASE_DIR, '')
 MEDIA_URL = '/uploads/'
 
-SITE_ID = 3
+SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
@@ -184,8 +188,8 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'bcrec.herokuapp.com', 'bcrecruiter.herokuapp.com'] 
+
 
 SOCIALACCOUNT_AUTO_SIGNUP = False
 
-django_heroku.settings(locals()) 
+
