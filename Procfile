@@ -1,1 +1,1 @@
-web: gunicorn bcr.wsgi 
+web: gunicorn bcrec.wsgi 
