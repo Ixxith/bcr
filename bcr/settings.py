@@ -156,7 +156,7 @@ STATICFILES_DIRS = [
 
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'bcrec.herokuapp.com', 'bcrecruiter.herokuapp.com'] 
 
-django_heroku.settings(locals()) 
+
 
 # AUTHENTICATION
 
@@ -192,4 +192,4 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SOCIALACCOUNT_AUTO_SIGNUP = False
 
-
+django_heroku.settings(locals()) 
